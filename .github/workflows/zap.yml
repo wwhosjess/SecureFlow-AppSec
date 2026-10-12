@@ -1,0 +1,81 @@
+name: Optional isolated ZAP scan
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Lab version to scan
+        type: choice
+        options: [vulnerable, fixed]
+        default: vulnerable
+permissions:
+  contents: read
+jobs:
+  zap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Start disposable local lab
+        env:
+          LAB_MODE: ${{ inputs.mode }}
+        run: |
+          mkdir -p reports/zap
+          python -u -m lab.app --mode "$LAB_MODE" --port 5050 --access-log > /tmp/secureflow-app.log 2>&1 &
+          echo $! > /tmp/secureflow-app.pid
+          for attempt in $(seq 1 20); do
+            if curl --fail --silent http://127.0.0.1:5050/health; then exit 0; fi
+            sleep 1
+          done
+          exit 1
+      - name: Run actual ZAP full scan
+        run: |
+          mkdir -p reports/zap
+          chmod 777 reports/zap
+          cp tools/zap_diagnostics.py reports/zap/zap_diagnostics.py
+          set +e
+          docker run --name secureflow-zap --network host -v "$PWD/reports/zap:/zap/wrk:rw" \
+            ghcr.io/zaproxy/zaproxy:stable@sha256:781a2bdaea47324e7bab583e2263f21d257b0aee61ed51521a5be45f5f5081ef zap-full-scan.py \
+            -t http://127.0.0.1:5050 -m 1 -T 5 -J zap.json -r zap.html -d -z "-loglevel DEBUG" \
+            --hook=/zap/wrk/zap_diagnostics.py
+          scan_exit=$?
+          set -e
+          printf '%s\n' "$scan_exit" > reports/zap/exit-code.txt
+          # Findings are expected in a teaching lab; tooling failures still fail.
+          if [ "$scan_exit" -gt 2 ]; then exit "$scan_exit"; fi
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          out = Path('reports/zap')
+          assert json.loads((out / 'zap.json').read_text())['site'], 'No scanned site'
+          assert '<html' in (out / 'zap.html').read_text().lower(), 'Missing HTML report'
+          diagnostic = json.loads((out / 'diagnostics.json').read_text())
+          assert diagnostic['status'] == 'completed' and diagnostic['message_count'] > 0
+          assert (out / 'http-messages.jsonl.gz').stat().st_size > 0
+          PY
+      - name: Preserve scanner and server diagnostics
+        if: always()
+        run: |
+          mkdir -p reports/zap
+          cp /tmp/secureflow-app.log reports/zap/server.log
+          if docker inspect secureflow-zap >/dev/null 2>&1; then
+            docker logs secureflow-zap > reports/zap/container.log 2>&1
+            docker inspect --format '{{.Image}}' secureflow-zap > reports/zap/image-id.txt
+            docker cp secureflow-zap:/home/zap/.ZAP/zap.log reports/zap/zap.log
+          else
+            echo 'ZAP container unavailable; internal logs could not be captured' >&2
+            exit 1
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zap-report
+          path: reports/zap/
+          if-no-files-found: error
+      - name: Stop disposable services
+        if: always()
+        run: |
+          if test -f /tmp/secureflow-app.pid; then kill "$(cat /tmp/secureflow-app.pid)" || true; fi
+          docker rm -f secureflow-zap || true

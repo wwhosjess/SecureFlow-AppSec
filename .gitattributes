@@ -1,0 +1,9 @@
+* text=auto
+# Preserve imported evidence and source hashes across platforms.
+evidence/** -text
+lab/** -text
+rules/** -text
+tests/** -text
+tools/** -text
+security_scan.py -text
+requirements-tools.txt -text

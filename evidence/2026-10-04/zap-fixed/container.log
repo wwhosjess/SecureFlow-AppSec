@@ -1,0 +1,307 @@
+2026-10-04 10:33:52,621 Trigger hook: cli_opts, args: 1
+2026-10-04 10:33:52,621 Using port: 53755
+2026-10-04 10:33:52,621 Trigger hook: start_zap, args: 2
+2026-10-04 10:33:52,621 Starting ZAP
+2026-10-04 10:33:52,621 Params: ['/zap/zap-x.sh', '-daemon', '-port', '53755', '-host', '0.0.0.0', '-config', 'database.recoverylog=false', '-config', 'api.disablekey=true', '-config', 'api.addrs.addr.name=.*', '-config', 'api.addrs.addr.regex=true', '-config', 'spider.maxDuration=1', '-config', 'stats.pkg.fullscan-api=1', '-addonupdate', '-addoninstall', 'pscanrulesBeta', '-addoninstall', 'ascanrulesBeta', '-loglevel', 'DEBUG']
+2026-10-04 10:33:52,623 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:33:53,626 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:33:54,630 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:33:55,635 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:33:56,640 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:33:57,643 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:33:58,648 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:33:59,653 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:00,655 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:01,663 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:02,665 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:03,670 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:04,672 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:05,677 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:06,680 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:07,685 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:08,687 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:08,746 http://localhost:53755 "GET http://zap/JSON/core/view/version/ HTTP/1.1" 200 20
+2026-10-04 10:34:08,749 ZAP Version 2.17.0
+2026-10-04 10:34:08,749 Took 16 seconds
+2026-10-04 10:34:08,750 Trigger hook: zap_started, args: 2
+2026-10-04 10:34:08,751 Tune
+2026-10-04 10:34:08,751 Disable all tags
+2026-10-04 10:34:08,753 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:08,770 http://localhost:53755 "GET http://zap/JSON/pscan/action/disableAllTags/ HTTP/1.1" 200 15
+2026-10-04 10:34:08,771 Set max pscan alerts
+2026-10-04 10:34:08,773 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:08,778 http://localhost:53755 "GET http://zap/JSON/pscan/action/setMaxAlertsPerRule/?maxAlerts=10 HTTP/1.1" 200 15
+2026-10-04 10:34:08,779 Trigger hook: zap_tuned, args: 1
+2026-10-04 10:34:08,779 Trigger hook: zap_access_target, args: 2
+2026-10-04 10:34:08,780 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:08,823 http://localhost:53755 "GET http://127.0.0.1:5050/ HTTP/1.1" 200 117
+2026-10-04 10:34:10,824 Trigger hook: zap_spider, args: 2
+2026-10-04 10:34:10,825 Spider http://127.0.0.1:5050
+2026-10-04 10:34:10,825 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:10,835 http://localhost:53755 "GET http://zap/JSON/spider/action/scan/?url=http%3A%2F%2F127.0.0.1%3A5050 HTTP/1.1" 200 12
+2026-10-04 10:34:15,839 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:15,843 http://localhost:53755 "GET http://zap/JSON/spider/view/status/?scanId=0 HTTP/1.1" 200 16
+2026-10-04 10:34:15,844 Spider complete
+2026-10-04 10:34:15,844 Trigger hook: zap_spider_wrap, args: 1
+2026-10-04 10:34:15,844 Trigger hook: zap_active_scan, args: 3
+2026-10-04 10:34:15,845 Active Scan http://127.0.0.1:5050 with policy Default Policy
+2026-10-04 10:34:15,846 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:15,865 http://localhost:53755 "GET http://zap/JSON/ascan/action/scan/?url=http%3A%2F%2F127.0.0.1%3A5050&recurse=True&scanPolicyName=Default+Policy HTTP/1.1" 200 12
+2026-10-04 10:34:20,870 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:20,929 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:34:20,934 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:21,004 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:34:21,006 Active Scan progress %: 24
+2026-10-04 10:34:26,012 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:26,048 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:34:26,049 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:26,082 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:34:26,083 Active Scan progress %: 24
+2026-10-04 10:34:31,090 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:31,098 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:34:31,100 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:31,105 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:34:31,106 Active Scan progress %: 24
+2026-10-04 10:34:36,107 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:36,111 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:34:36,112 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:36,114 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:34:36,115 Active Scan progress %: 24
+2026-10-04 10:34:41,117 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:41,120 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:34:41,122 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:41,124 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:34:41,125 Active Scan progress %: 25
+2026-10-04 10:34:46,126 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:46,129 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:34:46,130 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:46,133 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:34:46,133 Active Scan progress %: 25
+2026-10-04 10:34:51,135 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:51,141 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:34:51,143 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:51,148 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:34:51,149 Active Scan progress %: 25
+2026-10-04 10:34:56,150 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:56,154 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:34:56,156 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:34:56,158 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:34:56,158 Active Scan progress %: 25
+2026-10-04 10:35:01,159 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:01,162 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:35:01,163 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:01,164 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:35:01,165 Active Scan progress %: 25
+2026-10-04 10:35:06,166 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:06,169 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:35:06,170 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:06,172 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:35:06,173 Active Scan progress %: 25
+2026-10-04 10:35:11,174 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:11,177 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:35:11,179 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:11,182 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 15
+2026-10-04 10:35:11,183 Active Scan progress %: 25
+2026-10-04 10:35:16,184 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,188 http://localhost:53755 "GET http://zap/JSON/ascan/view/status/?scanId=0 HTTP/1.1" 200 16
+2026-10-04 10:35:16,188 Active Scan complete
+2026-10-04 10:35:16,190 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,204 http://localhost:53755 "GET http://zap/JSON/ascan/view/scanProgress/?scanId=0 HTTP/1.1" 200 6369
+2026-10-04 10:35:16,205 ['http://127.0.0.1:5050', {'HostProcess': [{'Plugin': ['Path Traversal', '6', 'release', 'Complete', '275', '30', '0']}, {'Plugin': ['Remote File Inclusion', '7', 'release', 'Complete', '58', '20', '0']}, {'Plugin': ['Source Code Disclosure - /WEB-INF Folder', '10045', 'release', 'Complete', '15', '2', '0']}, {'Plugin': ['Remote Code Execution - Shell Shock', '10048', 'release', 'Complete', '20', '4', '0']}, {'Plugin': ['Heartbleed OpenSSL Vulnerability', '20015', 'release', 'Complete', '7', '3', '0']}, {'Plugin': ['Source Code Disclosure - CVE-2012-1823', '20017', 'release', 'Complete', '212', '4', '0']}, {'Plugin': ['Remote Code Execution - CVE-2012-1823', '20018', 'release', 'Complete', '24', '12', '0']}, {'Plugin': ['External Redirect', '20019', 'release', 'Complete', '36', '18', '0']}, {'Plugin': ['Server Side Include', '40009', 'release', 'Complete', '19', '8', '0']}, {'Plugin': ['Cross Site Scripting (Reflected)', '40012', 'release', 'Complete', '31', '11', '0']}, {'Plugin': ['Cross Site Scripting (Persistent) - Prime', '40016', 'release', 'Complete', '13', '2', '0']}, {'Plugin': ['Cross Site Scripting (Persistent) - Spider', '40017', 'release', 'Complete', '211', '6', '0']}, {'Plugin': ['Cross Site Scripting (Persistent)', '40014', 'release', 'Complete', '7', '0', '0']}, {'Plugin': ['SQL Injection', '40018', 'release', 'Complete', '110', '45', '0']}, {'Plugin': ['SQL Injection - MySQL (Time Based)', '40019', 'release', 'Complete', '45', '20', '0']}, {'Plugin': ['SQL Injection - Hypersonic SQL (Time Based)', '40020', 'release', 'Complete', '46', '20', '0']}, {'Plugin': ['SQL Injection - Oracle (Time Based)', '40021', 'release', 'Complete', '28', '10', '0']}, {'Plugin': ['SQL Injection - PostgreSQL (Time Based)', '40022', 'release', 'Complete', '32', '10', '0']}, {'Plugin': ['Cross Site Scripting (DOM Based)', '40026', 'release', 'Complete', '52580', '18', '0']}, {'Plugin': ['SQL Injection - MsSQL (Time Based)', '40027', 'release', 'Complete', '31', '20', '0']}, {'Plugin': ['Log4Shell', '40043', 'release', 'Skipped, no Active Scan OAST service is selected.', '0', '0', '0']}, {'Plugin': ['Spring4Shell', '40045', 'release', 'Complete', '216', '18', '0']}, {'Plugin': ['Remote Code Execution (React2Shell)', '40048', 'release', 'Complete', '5', '1', '0']}, {'Plugin': ['Server Side Code Injection', '90019', 'release', 'Complete', '29', '16', '0']}, {'Plugin': ['Remote OS Command Injection', '90020', 'release', 'Complete', '61', '38', '0']}, {'Plugin': ['XPath Injection', '90021', 'release', 'Complete', '10', '6', '0']}, {'Plugin': ['XML External Entity Attack', '90023', 'release', 'Complete', '2', '0', '0']}, {'Plugin': ['Generic Padding Oracle', '90024', 'release', 'Complete', '5', '0', '0']}, {'Plugin': ['Cloud Metadata Potentially Exposed', '90034', 'release', 'Complete', '40', '13', '0']}, {'Plugin': ['Server Side Template Injection', '90035', 'release', 'Complete', '211', '28', '0']}, {'Plugin': ['Server Side Template Injection (Blind)', '90036', 'release', 'Complete', '36', '24', '0']}, {'Plugin': ['Remote OS Command Injection (Time Based)', '90037', 'release', 'Complete', '33', '32', '0']}, {'Plugin': ['Directory Browsing', '0', 'release', 'Complete', '207', '6', '0']}, {'Plugin': ['HTTP Only Site', '10106', 'release', 'Complete', '8', '0', '0']}, {'Plugin': ['Buffer Overflow', '30001', 'release', 'Complete', '12', '2', '0']}, {'Plugin': ['Format String Error', '30002', 'release', 'Complete', '12', '6', '0']}, {'Plugin': ['CRLF Injection', '40003', 'release', 'Complete', '38', '14', '0']}, {'Plugin': ['Parameter Tampering', '40008', 'release', 'Complete', '24', '14', '0']}, {'Plugin': ['ELMAH Information Leak', '40028', 'release', 'Complete', '3', '1', '0']}, {'Plugin': ['Trace.axd Information Leak', '40029', 'release', 'Complete', '6', '1', '0']}, {'Plugin': ['.htaccess Information Leak', '40032', 'release', 'Complete', '5', '1', '0']}, {'Plugin': ['.env Information Leak', '40034', 'release', 'Complete', '5', '1', '0']}, {'Plugin': ['Spring Actuator Information Leak', '40042', 'release', 'Complete', '6', '2', '0']}, {'Plugin': ['Hidden File Finder', '40035', 'release', 'Complete', '98', '52', '0']}, {'Plugin': ['Exponential Entity Expansion (Billion Laughs Attack)', '40044', 'release', 'Complete', '81', '0', '0']}, {'Plugin': ['XSLT Injection', '90017', 'release', 'Complete', '48', '16', '0']}, {'Plugin': ['HTTPS Content Available via HTTP', '10047', 'release', 'Complete', '6', '0', '0']}, {'Plugin': ['GET for POST', '10058', 'release', 'Complete', '10', '0', '0']}, {'Plugin': ['User Agent Fuzzer', '10104', 'release', 'Complete', '244', '72', '0']}, {'Plugin': ['Script Active Scan Rules', '50000', 'release', 'Skipped, no scripts enabled.', '1', '0', '0']}, {'Plugin': ['Source Code Disclosure - Git', '41', 'beta', 'Complete', '7', '0', '0']}, {'Plugin': ['Source Code Disclosure - File Inclusion', '43', 'beta', 'Complete', '103', '17', '1']}, {'Plugin': ['Httpoxy - Proxy Header Misuse', '10107', 'beta', 'Complete', '221', '30', '0']}, {'Plugin': ['Cross-Domain Misconfiguration', '20016', 'beta', 'Complete', '10', '2', '0']}, {'Plugin': ['Session Fixation', '40013', 'beta', 'Complete', '10', '0', '0']}, {'Plugin': ['Out of Band XSS', '40031', 'beta', 'Complete', '91', '8', '0']}, {'Plugin': ['NoSQL Injection - MongoDB', '40033', 'beta', 'Complete', '33', '26', '0']}, {'Plugin': ['Server Side Request Forgery', '40046', 'beta', 'Complete', '16', '2', '0']}, {'Plugin': ['Text4shell (CVE-2022-42889)', '40047', 'beta', 'Skipped, no Active Scan OAST service is selected.', '1', '0', '0']}, {'Plugin': ['Expression Language Injection', '90025', 'beta', 'Complete', '8', '2', '0']}, {'Plugin': ['SOAP Action Spoofing', '90026', 'beta', 'Complete', '4', '0', '0']}, {'Plugin': ['SOAP XML Injection', '90029', 'beta', 'Complete', '4', '0', '0']}, {'Plugin': ['NoSQL Injection - MongoDB (Time Based)', '90039', 'beta', 'Complete', '34', '20', '0']}, {'Plugin': ['Source Code Disclosure - SVN', '42', 'beta', 'Complete', '5', '2', '0']}, {'Plugin': ['Relative Path Confusion', '10051', 'beta', 'Complete', '62', '2', '0']}, {'Plugin': ['Backup File Disclosure', '10095', 'beta', 'Complete', '97', '98', '0']}, {'Plugin': ['Anti-CSRF Tokens Check', '20012', 'beta', 'Complete', '2', '0', '0']}, {'Plugin': ['Integer Overflow Error', '30003', 'beta', 'Complete', '16', '8', '0']}, {'Plugin': ['Proxy Disclosure', '40025', 'beta', 'Complete', '224', '48', '0']}, {'Plugin': ['Bypassing 403', '40038', 'beta', 'Complete', '10', '6', '0']}, {'Plugin': ['CORS Header', '40040', 'beta', 'Complete', '222', '42', '0']}, {'Plugin': ['Insecure HTTP Method', '90028', 'beta', 'Complete', '206', '6', '0']}, {'Plugin': ['HTTP Parameter Pollution', '20014', 'beta', 'Complete', '4', '0', '0']}, {'Plugin': ['Possible Username Enumeration', '40023', 'beta', 'Skipped', '0', '0', '0']}, {'Plugin': ['Cookie Slack Detector', '90027', 'beta', 'Complete', '3', '0', '0']}]}]
+2026-10-04 10:35:16,210 Trigger hook: zap_active_scan_wrap, args: 1
+2026-10-04 10:35:16,211 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,214 http://localhost:53755 "GET http://zap/JSON/pscan/view/recordsToScan/ HTTP/1.1" 200 21
+2026-10-04 10:35:16,214 Records to scan...
+2026-10-04 10:35:16,215 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,216 http://localhost:53755 "GET http://zap/JSON/pscan/view/recordsToScan/ HTTP/1.1" 200 21
+2026-10-04 10:35:16,216 Passive scanning complete
+2026-10-04 10:35:16,217 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,218 http://localhost:53755 "GET http://zap/JSON/core/view/urls/ HTTP/1.1" 200 208
+2026-10-04 10:35:16,219 Trigger hook: zap_get_alerts, args: 4
+2026-10-04 10:35:16,220 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,227 http://localhost:53755 "GET http://zap/JSON/core/view/alerts/?baseurl=http%3A%2F%2F127.0.0.1%3A5050&start=0&count=5000 HTTP/1.1" 200 24306
+2026-10-04 10:35:16,228 Reading 5000 alerts from 0
+2026-10-04 10:35:16,229 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,232 http://localhost:53755 "GET http://zap/JSON/core/view/alerts/?start=5000&count=5000 HTTP/1.1" 200 13
+2026-10-04 10:35:16,233 Total number of alerts: 7
+2026-10-04 10:35:16,233 Trigger hook: zap_get_alerts_wrap, args: 1
+2026-10-04 10:35:16,233 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,248 http://localhost:53755 "GET http://zap/JSON/ascan/view/scanners/?scanPolicyName=Default+Policy HTTP/1.1" 200 18987
+2026-10-04 10:35:16,249 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,254 http://localhost:53755 "GET http://zap/JSON/pscan/view/scanners/ HTTP/1.1" 200 9283
+2026-10-04 10:35:16,255 Trigger hook: print_rules_wrap, args: 2
+2026-10-04 10:35:16,255 Trigger hook: print_rules_wrap, args: 2
+2026-10-04 10:35:16,256 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,259 http://localhost:53755 "GET http://zap/JSON/core/view/message/?id=647 HTTP/1.1" 200 1033
+2026-10-04 10:35:16,259 Trigger hook: print_rules_wrap, args: 2
+2026-10-04 10:35:16,260 Trigger hook: print_rules_wrap, args: 2
+2026-10-04 10:35:16,260 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,573 http://localhost:53755 "GET http://zap/OTHER/core/other/htmlreport/ HTTP/1.1" 200 38308
+2026-10-04 10:35:16,575 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,628 http://localhost:53755 "GET http://zap/OTHER/core/other/jsonreport/ HTTP/1.1" 200 13111
+2026-10-04 10:35:16,632 Trigger hook: zap_pre_shutdown, args: 1
+2026-10-04 10:35:16,633 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,741 http://localhost:53755 "GET http://zap/JSON/core/view/messages/?baseurl=http%3A%2F%2F127.0.0.1%3A5050&start=0&count=500 HTTP/1.1" 200 542345
+2026-10-04 10:35:16,770 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,950 http://localhost:53755 "GET http://zap/JSON/core/view/messages/?baseurl=http%3A%2F%2F127.0.0.1%3A5050&start=500&count=500 HTTP/1.1" 200 487663
+2026-10-04 10:35:16,963 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,966 http://localhost:53755 "GET http://zap/JSON/ascan/view/scans/ HTTP/1.1" 200 112
+2026-10-04 10:35:16,968 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,972 http://localhost:53755 "GET http://zap/JSON/ascan/view/messagesIds/?scanId=0 HTTP/1.1" 200 5603
+2026-10-04 10:35:16,974 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,976 http://localhost:53755 "GET http://zap/JSON/core/view/version/ HTTP/1.1" 200 20
+2026-10-04 10:35:16,978 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,979 http://localhost:53755 "GET http://zap/JSON/core/view/zapHomePath/ HTTP/1.1" 200 33
+2026-10-04 10:35:16,982 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,984 http://localhost:53755 "GET http://zap/JSON/ascan/view/scans/ HTTP/1.1" 200 112
+2026-10-04 10:35:16,985 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,987 http://localhost:53755 "GET http://zap/JSON/stats/view/stats/?keyPrefix=stats.network. HTTP/1.1" 200 71
+2026-10-04 10:35:16,989 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,990 http://localhost:53755 "GET http://zap/JSON/core/view/zapHomePath/ HTTP/1.1" 200 33
+2026-10-04 10:35:16,995 Starting new HTTP connection (1): localhost:53755
+2026-10-04 10:35:16,997 http://localhost:53755 "GET http://zap/JSON/core/action/shutdown/ HTTP/1.1" 200 15
+2026-10-04 10:35:16,997 Trigger hook: pre_exit, args: 3
+Total of 6 URLs
+PASS: Directory Browsing [0]
+PASS: Vulnerable JS Library (Powered by Retire.js) [10003]
+PASS: In Page Banner Information Leak [10009]
+PASS: Cookie No HttpOnly Flag [10010]
+PASS: Cookie Without Secure Flag [10011]
+PASS: Re-examine Cache-control Directives [10015]
+PASS: Cross-Domain JavaScript Source File Inclusion [10017]
+PASS: Content-Type Header Missing [10019]
+PASS: Anti-clickjacking Header [10020]
+PASS: X-Content-Type-Options Header Missing [10021]
+PASS: Information Disclosure - Debug Error Messages [10023]
+PASS: Information Disclosure - Sensitive Information in URL [10024]
+PASS: Information Disclosure - Sensitive Information in HTTP Referrer Header [10025]
+PASS: HTTP Parameter Override [10026]
+PASS: Information Disclosure - Suspicious Comments [10027]
+PASS: Off-site Redirect [10028]
+PASS: Cookie Poisoning [10029]
+PASS: User Controllable Charset [10030]
+PASS: User Controllable HTML Element Attribute (Potential XSS) [10031]
+PASS: Viewstate [10032]
+PASS: Directory Browsing [10033]
+PASS: Heartbleed OpenSSL Vulnerability (Indicative) [10034]
+PASS: Strict-Transport-Security Header [10035]
+PASS: HTTP Server Response Header [10036]
+PASS: Server Leaks Information via "X-Powered-By" HTTP Response Header Field(s) [10037]
+PASS: Content Security Policy (CSP) Header Not Set [10038]
+PASS: X-Backend-Server Header Information Leak [10039]
+PASS: Secure Pages Include Mixed Content [10040]
+PASS: HTTP to HTTPS Insecure Transition in Form Post [10041]
+PASS: HTTPS to HTTP Insecure Transition in Form Post [10042]
+PASS: User Controllable JavaScript Event (XSS) [10043]
+PASS: Big Redirect Detected (Potential Sensitive Information Leak) [10044]
+PASS: Source Code Disclosure - /WEB-INF Folder [10045]
+PASS: HTTPS Content Available via HTTP [10047]
+PASS: Remote Code Execution - Shell Shock [10048]
+PASS: Content Cacheability [10049]
+PASS: Retrieved from Cache [10050]
+PASS: Relative Path Confusion [10051]
+PASS: X-ChromeLogger-Data (XCOLD) Header Information Leak [10052]
+PASS: Cookie without SameSite Attribute [10054]
+PASS: CSP [10055]
+PASS: X-Debug-Token Information Leak [10056]
+PASS: Username Hash Found [10057]
+PASS: GET for POST [10058]
+PASS: X-AspNet-Version Response Header [10061]
+PASS: PII Disclosure [10062]
+PASS: Permissions Policy Header Not Set [10063]
+PASS: Backup File Disclosure [10095]
+PASS: Timestamp Disclosure [10096]
+PASS: Hash Disclosure [10097]
+PASS: Cross-Domain Misconfiguration [10098]
+PASS: Source Code Disclosure [10099]
+PASS: User Agent Fuzzer [10104]
+PASS: Weak Authentication Method [10105]
+PASS: HTTP Only Site [10106]
+PASS: Httpoxy - Proxy Header Misuse [10107]
+PASS: Reverse Tabnabbing [10108]
+PASS: Modern Web Application [10109]
+PASS: Dangerous JS Functions [10110]
+PASS: Authentication Request Identified [10111]
+PASS: Session Management Response Identified [10112]
+PASS: Verification Request Identified [10113]
+PASS: Script Served From Malicious Domain (polyfill) [10115]
+PASS: ZAP is Out of Date [10116]
+PASS: Absence of Anti-CSRF Tokens [10202]
+PASS: Private IP Disclosure [2]
+PASS: Anti-CSRF Tokens Check [20012]
+PASS: HTTP Parameter Pollution [20014]
+PASS: Heartbleed OpenSSL Vulnerability [20015]
+PASS: Cross-Domain Misconfiguration [20016]
+PASS: Source Code Disclosure - CVE-2012-1823 [20017]
+PASS: Remote Code Execution - CVE-2012-1823 [20018]
+PASS: External Redirect [20019]
+PASS: Session ID in URL Rewrite [3]
+PASS: Buffer Overflow [30001]
+PASS: Format String Error [30002]
+PASS: Integer Overflow Error [30003]
+PASS: CRLF Injection [40003]
+PASS: Parameter Tampering [40008]
+PASS: Server Side Include [40009]
+PASS: Cross Site Scripting (Reflected) [40012]
+PASS: Session Fixation [40013]
+PASS: Cross Site Scripting (Persistent) [40014]
+PASS: Cross Site Scripting (Persistent) - Prime [40016]
+PASS: Cross Site Scripting (Persistent) - Spider [40017]
+PASS: SQL Injection [40018]
+PASS: SQL Injection - MySQL (Time Based) [40019]
+PASS: SQL Injection - Hypersonic SQL (Time Based) [40020]
+PASS: SQL Injection - Oracle (Time Based) [40021]
+PASS: SQL Injection - PostgreSQL (Time Based) [40022]
+PASS: Possible Username Enumeration [40023]
+PASS: Proxy Disclosure [40025]
+PASS: Cross Site Scripting (DOM Based) [40026]
+PASS: SQL Injection - MsSQL (Time Based) [40027]
+PASS: ELMAH Information Leak [40028]
+PASS: Trace.axd Information Leak [40029]
+PASS: Out of Band XSS [40031]
+PASS: .htaccess Information Leak [40032]
+PASS: NoSQL Injection - MongoDB [40033]
+PASS: .env Information Leak [40034]
+PASS: Hidden File Finder [40035]
+PASS: Bypassing 403 [40038]
+PASS: CORS Header [40040]
+PASS: Spring Actuator Information Leak [40042]
+PASS: Log4Shell [40043]
+PASS: Exponential Entity Expansion (Billion Laughs Attack) [40044]
+PASS: Spring4Shell [40045]
+PASS: Server Side Request Forgery [40046]
+PASS: Text4shell (CVE-2022-42889) [40047]
+PASS: Remote Code Execution (React2Shell) [40048]
+PASS: Source Code Disclosure - Git [41]
+PASS: Source Code Disclosure - SVN [42]
+PASS: Script Active Scan Rules [50000]
+PASS: Script Passive Scan Rules [50001]
+PASS: Path Traversal [6]
+PASS: Remote File Inclusion [7]
+PASS: Insecure JSF ViewState [90001]
+PASS: Java Serialization Object [90002]
+PASS: Sub Resource Integrity Attribute Missing [90003]
+PASS: Insufficient Site Isolation Against Spectre Vulnerability [90004]
+PASS: Charset Mismatch [90011]
+PASS: XSLT Injection [90017]
+PASS: Server Side Code Injection [90019]
+PASS: Remote OS Command Injection [90020]
+PASS: XPath Injection [90021]
+PASS: Application Error Disclosure [90022]
+PASS: XML External Entity Attack [90023]
+PASS: Generic Padding Oracle [90024]
+PASS: Expression Language Injection [90025]
+PASS: SOAP Action Spoofing [90026]
+PASS: Cookie Slack Detector [90027]
+PASS: Insecure HTTP Method [90028]
+PASS: SOAP XML Injection [90029]
+PASS: WSDL File Detection [90030]
+PASS: Loosely Scoped Cookie [90033]
+PASS: Cloud Metadata Potentially Exposed [90034]
+PASS: Server Side Template Injection [90035]
+PASS: Server Side Template Injection (Blind) [90036]
+PASS: Remote OS Command Injection (Time Based) [90037]
+PASS: NoSQL Injection - MongoDB (Time Based) [90039]
+WARN-NEW: Source Code Disclosure - File Inclusion [43] x 1 
+	http://127.0.0.1:5050/reflect?q=hello (200 OK)
+FAIL-NEW: 0	FAIL-INPROG: 0	WARN-NEW: 1	WARN-INPROG: 0	INFO: 0	IGNORE: 0	PASS: 140

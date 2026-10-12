@@ -1,0 +1,31 @@
+{
+  "commit": "4bccd4c82e60e5e309aaa87e9e4437b0027df2ce",
+  "path": "lab/app.py",
+  "sha256": "36541982eaab4559248b1529ca751cd5ef9d75513cf7c0a5cf37ef00c8069fb3",
+  "excerpts": [
+    {
+      "line": 87,
+      "text": "    def reflection(self, term):"
+    },
+    {
+      "line": 88,
+      "text": "        if self.mode == \"vulnerable\":"
+    },
+    {
+      "line": 89,
+      "text": "            return \"<h1>Search results</h1><p>\" + term + \"</p>\""
+    },
+    {
+      "line": 90,
+      "text": "        return \"<h1>Search results</h1><p>\" + html.escape(term) + \"</p>\""
+    },
+    {
+      "line": 155,
+      "text": "            if parsed.path == \"/reflect\":"
+    },
+    {
+      "line": 156,
+      "text": "                return self.send(200, shop.reflection(parse_qs(parsed.query).get(\"q\", [\"\"])[0]), \"text/html\")"
+    }
+  ]
+}

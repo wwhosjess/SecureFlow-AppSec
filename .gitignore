@@ -1,0 +1,66 @@
+# Python environments and caches
+.venv/
+.venv-*/
+venv/
+venv-*/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# Local runtimes and editors
+.sites-runtime/
+node_modules/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Credentials and local session state
+.env
+.env.*
+!.env.example
+!.env.sample
+.netrc
+_netrc
+.git-credentials
+.aws/
+.ssh/
+credentials/
+secrets/
+credentials*.json
+credentials*.yml
+credentials*.yaml
+*service-account*.json
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+cookies*
+*cookies.txt
+*.cookies
+*.cookie
+
+# Generated source bundles; sanitized scan evidence remains tracked
+*source*.zip
+secureflow*.zip
+
+# Local preparation notes and export bundles
+local-notes/
+private-notes/
+SecureFlow-Hosted-Update*.zip
+
+# Generated runs are separate from the curated historical evidence.
+/reports/
+*.zip
+*.session
+*.session.json

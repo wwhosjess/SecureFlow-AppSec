@@ -1,0 +1,81 @@
+{
+  "description": "Selected historical execution evidence imported byte-for-byte into a new repository. These scans were not executed by the new repository.",
+  "assembled_on": "2026-10-05",
+  "origin": "Earlier private development repository; no Git history or account credentials imported.",
+  "runs": {
+    "pipeline": {
+      "original_run_id": 37195707999,
+      "original_source_commit": "4bccd4c82e60e5e309aaa87e9e4437b0027df2ce",
+      "scan_date": "2026-10-04",
+      "status": "completed",
+      "conclusion": "success",
+      "location": "2026-10-04/pipeline"
+    },
+    "zap_vulnerable": {
+      "original_run_id": 37131531623,
+      "original_source_commit": "abf996e425afb43f3cfa564fb25d820fcedf9a34",
+      "scan_date": "2026-10-03",
+      "status": "completed",
+      "workflow_conclusion": "success",
+      "scanner_exit": 2,
+      "location": "2026-10-03/zap-vulnerable"
+    },
+    "zap_fixed": {
+      "original_run_id": 37195725264,
+      "original_source_commit": "4bccd4c82e60e5e309aaa87e9e4437b0027df2ce",
+      "scan_date": "2026-10-04",
+      "status": "completed",
+      "workflow_conclusion": "success",
+      "scanner_exit": 2,
+      "location": "2026-10-04/zap-fixed"
+    }
+  },
+  "source_files_sha256": {
+    "lab/__init__.py": "b639e6ba96fdac1e9918601d20002a59cfca0575cecb8526da6d4d11f0b2bb5f",
+    "lab/app.py": "36541982eaab4559248b1529ca751cd5ef9d75513cf7c0a5cf37ef00c8069fb3",
+    "lab/dependencies-fixed.txt": "cb997fa399dbf2520fd135a1668762d7153a0a5f901b6ef9eef3bace8f394052",
+    "lab/dependencies-vulnerable.txt": "a938a48291cc7f224e4268072af70e259436d40fabe24cad350eda4c462c739a",
+    "lab/fixed_sql.py": "45638dbc5dd1a283876246c9a77d169228516ae09ce19da6f89a5d7ab1a5e2e1",
+    "lab/vulnerable_sql.py": "98734980a229f1d03b37976f9f3c127b844e4845c8d31a57923bb01fd723f25e",
+    "requirements-tools.txt": "c94e4ee0bdcc9fc8c5c4b5d3e62c72df00f1228e67996ade8eeb7fd6150c74dd",
+    "rules/unsafe-sql.py": "5786173c4779cbb1ffc403501282ffed76c5a3bba775910d49c7729744d19aa0",
+    "rules/unsafe-sql.yaml": "a5e0d770d1c8a59cd5d882a9c3b9d67e1257509aba77f86492d9b63b2a77d691",
+    "security_scan.py": "99d5159fb6dfaf35a79581fa5ee389540f014863942fca62800dd3c1a4457e4f",
+    "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/test_http_hardening.py": "67758c6a15d3089857ed39c3d7290ea432316b8a82f4bcf25abfe983c5288043",
+    "tests/test_scan_runner.py": "25d4e4981063d21375469cd27aa491377b474fb6ab3d0dbd3bd01dad6cf964bd",
+    "tests/test_security.py": "c9e903b09e356591860e89e59d8bdfbfd4289769938b80a2ae40c31d70220937",
+    "tools/zap_diagnostics.py": "e51cf72bf6034cbbcd5065cd20b4433b891f0ec5ac68536341b9c4d735387028"
+  },
+  "evidence_files_sha256": {
+    "2026-10-04/pipeline/vulnerable/summary.json": "d8c710131dad8b58159753272386e319cc6a77856186bc5793ec3288dc1bbae6",
+    "2026-10-04/pipeline/vulnerable/sast.json": "6f2cf08678dba4749b3b9cb5b71e1fc808a18e1bd041b37cb18c65142193d929",
+    "2026-10-04/pipeline/vulnerable/sca.json": "0962ed4891a2e61701f521f25a20467120e3e372debcaa20b416753f34e95f02",
+    "2026-10-04/pipeline/vulnerable/tests.txt": "00b970868f551bef390964748a9249968a9b1c2c4e12e4fa4308b944d96d82cf",
+    "2026-10-04/pipeline/vulnerable/sast.log": "2535c6db174cd1d74931d678f49dc413134a0a20735fb11e9f9fcc7521c53379",
+    "2026-10-04/pipeline/vulnerable/sca.log": "6f41083ad862eb55a8bede3496b0db3e3846901093144d747fddf4725adb975e",
+    "2026-10-04/pipeline/fixed/summary.json": "526e9d4299c1b094556764fa42a071790a0427e0ac953176205289b834f391b2",
+    "2026-10-04/pipeline/fixed/sast.json": "520b745d4c2be0855b6b4493eaf1161d4003c133d3ce914441bdcd6b47d77fd7",
+    "2026-10-04/pipeline/fixed/sca.json": "3520fdad4a900dc70d91a4425257474f1d4b351e9257abd648d6c0ae4eae2586",
+    "2026-10-04/pipeline/fixed/tests.txt": "362bb38464af0327a58f25fae4c3591fc5639d82818e30b441ae4c0e034a74ca",
+    "2026-10-04/pipeline/fixed/sast.log": "fa2e3f6bdb949ce1a98dc5d596c0892bd57c99530fa75ce2e9859c69fdb00a45",
+    "2026-10-04/pipeline/fixed/sca.log": "79d30422388543b2563e1dde76bb7e7857d7ef0c6fdf05c8c71598633ca07e1e",
+    "2026-10-03/zap-vulnerable/zap.json": "26a897827b3d31b861e9f2c8cf4d00c86e67900a8b129b411c832a09f3bde6a9",
+    "2026-10-03/zap-vulnerable/zap.html": "73fada977422b96242d8873641e79207254d6ff4692eebf455470053cfeb2e35",
+    "2026-10-03/zap-vulnerable/exit-code.txt": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+    "2026-10-03/zap-vulnerable/scan-console.txt": "a6a1d79b7cc71472b9a05632d89c999af88f6bd3e734dfeaa1b18e2130e7df89",
+    "2026-10-04/zap-fixed/container.log": "09e5abc11b016b6e0af93149dc98a9465e508660b1eac20c3be2b69f36d43aec",
+    "2026-10-04/zap-fixed/diagnostics.json": "3f91dc1084693b4dab082e053e7c9234a3b90972fffb8520b4396b9372111269",
+    "2026-10-04/zap-fixed/exit-code.txt": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+    "2026-10-04/zap-fixed/http-messages.jsonl.gz": "537d88908f34e57eb5ceeea7a568adeac2b761e17b3b4f1402884ab3653c8641",
+    "2026-10-04/zap-fixed/image-id.txt": "dfce6739034784267504e60d11faadfc870bd3dcc40cd7baabdee4760bc6a6a6",
+    "2026-10-04/zap-fixed/server.log": "9d3d527dc3134cf349c90080f7038e678a2ea55fa5e13081b2db5ba485aec398",
+    "2026-10-04/zap-fixed/source-disclosure-exchanges.json": "8fce6d14cd1978e16995e596422a79315a4bb89f13087dab4d1fbb3ad58cefae",
+    "2026-10-04/zap-fixed/zap.html": "5b212f9efcf778dd296819bfaf3771e7f690d50b25b7cac7bcb419dc5a644387",
+    "2026-10-04/zap-fixed/zap.json": "7cecc06377eac9b07ff344dc2f79cb3ed2dbf863ed77b956edda8de9d0d1799c",
+    "2026-10-04/zap-fixed/zap.log": "acde3cb062e0aaf6b821b37e80900989405182abbb6882043eeab39fa5438eaa",
+    "2026-10-04/network-failure-evidence.json": "c875ec911109dba7716fca912a450c49c35ad282c510a2c4dfe16170df6b5f75",
+    "2026-10-04/source-disclosure-local-replay.json": "1a3c242aba47d106db80535f96bb3f2ba95413deef8ec735f3b5ad4ebe4300ba",
+    "2026-10-04/code-evidence.json": "0972de2356bfb7e9f1943332154bec298ba7be0f40dcf512b1c9c820b38bc748"
+  }
+}

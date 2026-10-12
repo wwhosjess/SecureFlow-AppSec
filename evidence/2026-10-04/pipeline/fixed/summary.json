@@ -1,0 +1,68 @@
+{
+  "generated_at": "2026-10-04T10:33:12.033884+00:00",
+  "mode": "fixed",
+  "source_sha256": "1a33b0c8ece8a0d9e8c8e3d7946bcc471feab49e5e4a4f805f8d2eff35a7053b",
+  "gate": "pass",
+  "scans": {
+    "sast": {
+      "tool": "Semgrep custom rule",
+      "status": "completed",
+      "exit_code": 0,
+      "findings": [],
+      "finding_count": 0,
+      "scope": "One custom SQL construction rule on lab/fixed_sql.py"
+    },
+    "sca": {
+      "tool": "pip-audit",
+      "status": "completed",
+      "exit_code": 0,
+      "findings": [],
+      "raw_finding_count": 0,
+      "finding_count": 0,
+      "scope": "Scan-only direct dependency fixture. No transitive dependency coverage."
+    },
+    "dast": {
+      "tool": "SecureFlow HTTP probes",
+      "status": "completed",
+      "mode": "fixed",
+      "checks": [
+        {
+          "scenario": "idor",
+          "exploitable": false,
+          "evidence": "Cross-user order request: HTTP 403"
+        },
+        {
+          "scenario": "sqli",
+          "exploitable": false,
+          "evidence": "SQLi search: HTTP 200, hidden product returned=False"
+        },
+        {
+          "scenario": "xss",
+          "exploitable": false,
+          "evidence": "Raw executable HTML reflected=False",
+          "limitation": "HTTP reflection probe; does not execute JavaScript in a browser."
+        },
+        {
+          "scenario": "auth",
+          "exploitable": false,
+          "evidence": "Unsigned identity header: HTTP 401"
+        },
+        {
+          "scenario": "race",
+          "exploitable": false,
+          "evidence": "Two parallel redemptions: 1 accepted",
+          "limitation": "HTTP scheduling varies; deterministic concurrency regression also runs."
+        }
+      ],
+      "finding_count": 0
+    }
+  },
+  "regression": {
+    "status": "pass",
+    "exit_code": 0
+  },
+  "zap": {
+    "status": "not_run",
+    "reason": "Optional Docker workflow is configured separately."
+  }
+}

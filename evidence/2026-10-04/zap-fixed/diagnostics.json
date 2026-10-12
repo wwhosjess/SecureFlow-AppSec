@@ -1,0 +1,20 @@
+{
+  "status": "completed",
+  "message_count": 955,
+  "zap_version": "2.17.0",
+  "zap_home": "/home/zap/.ZAP/",
+  "active_scans": [
+    {
+      "reqCount": "947",
+      "alertCount": "1",
+      "progress": "100",
+      "newAlertCount": "1",
+      "id": "0",
+      "state": "FINISHED"
+    }
+  ],
+  "network_stats": {
+    "stats.network.send.failure": "13",
+    "stats.network.send.success": "1505"
+  }
+}

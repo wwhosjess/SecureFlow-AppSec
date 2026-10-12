@@ -1,0 +1,22 @@
+test_fixed_headers_cover_success_auth_error_and_unsupported_method (test_http_hardening.HTTPHardening.test_fixed_headers_cover_success_auth_error_and_unsupported_method) ... ok
+test_fixed_login_order_and_encoded_reflection_still_work (test_http_hardening.HTTPHardening.test_fixed_login_order_and_encoded_reflection_still_work) ... ok
+test_vulnerable_examples_and_headers_remain_intentional (test_http_hardening.HTTPHardening.test_vulnerable_examples_and_headers_remain_intentional) ... ok
+test_duplicate_advisory_aliases_are_grouped (test_scan_runner.ScanExecution.test_duplicate_advisory_aliases_are_grouped) ... ok
+test_error_exit_cannot_reuse_stale_report (test_scan_runner.ScanExecution.test_error_exit_cannot_reuse_stale_report) ... ok
+test_findings_exit_is_completed (test_scan_runner.ScanExecution.test_findings_exit_is_completed) ... ok
+test_missing_scanner_is_not_pass (test_scan_runner.ScanExecution.test_missing_scanner_is_not_pass) ... ok
+test_non_json_output_is_error (test_scan_runner.ScanExecution.test_non_json_output_is_error) ... ok
+test_coupon_repeat_rejected (test_security.SecurityRegression.test_coupon_repeat_rejected) ... ok
+test_cross_user_order_blocked (test_security.SecurityRegression.test_cross_user_order_blocked) ... ok
+test_expired_session_rejected (test_security.SecurityRegression.test_expired_session_rejected) ... ok
+test_header_is_not_authentication (test_security.SecurityRegression.test_header_is_not_authentication) ... ok
+test_own_order_is_available (test_security.SecurityRegression.test_own_order_is_available) ... ok
+test_parallel_coupon_redemption (test_security.SecurityRegression.test_parallel_coupon_redemption) ... ok
+test_reflected_content_escaped (test_security.SecurityRegression.test_reflected_content_escaped) ... ok
+test_signed_session_and_tampering (test_security.SecurityRegression.test_signed_session_and_tampering) ... ok
+test_sql_injection_and_normal_search (test_security.SecurityRegression.test_sql_injection_and_normal_search) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 2.226s
+
+OK

@@ -1,0 +1,2 @@
+# Scan-only fixture. Never install these dependencies.
+requests==2.19.1

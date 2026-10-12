@@ -1,0 +1,1272 @@
+{
+  "vulnerable": {
+    "generated_at": "2026-10-04T10:33:07.510441+00:00",
+    "mode": "vulnerable",
+    "source_sha256": "1a33b0c8ece8a0d9e8c8e3d7946bcc471feab49e5e4a4f805f8d2eff35a7053b",
+    "gate": "findings",
+    "scans": {
+      "sast": {
+        "tool": "Semgrep custom rule",
+        "status": "completed",
+        "exit_code": 0,
+        "findings": [
+          {
+            "id": "rules.secureflow.sql-string-construction",
+            "severity": "ERROR",
+            "path": "lab/vulnerable_sql.py",
+            "line": 2,
+            "message": "SQL built by concatenation or interpolation. Bind user values as parameters."
+          }
+        ],
+        "finding_count": 1,
+        "scope": "One custom SQL construction rule on lab/vulnerable_sql.py"
+      },
+      "sca": {
+        "tool": "pip-audit",
+        "status": "completed",
+        "exit_code": 1,
+        "findings": [
+          {
+            "id": "PYSEC-2018-28",
+            "aliases": [
+              "CVE-2018-18074",
+              "GHSA-x84v-xcm2-53pg"
+            ],
+            "package": "requests",
+            "version": "2.19.1",
+            "fix_versions": [
+              "2.20.0"
+            ],
+            "description": "The Requests package before 2.20.0 for Python sends an HTTP Authorization header to an http URI upon receiving a same-hostname https-to-http redirect, which makes it easier for remote attackers to discover credentials by sniffing the network."
+          },
+          {
+            "id": "PYSEC-2023-74",
+            "aliases": [
+              "CVE-2023-32681",
+              "GHSA-j8r2-6x86-q33q"
+            ],
+            "package": "requests",
+            "version": "2.19.1",
+            "fix_versions": [
+              "2.31.0"
+            ],
+            "description": "### Impact  Since Requests v2.3.0, Requests has been vulnerable to potentially leaking `Proxy-Authorization` headers to destination servers, specifically during redirects to an HTTPS origin. This is a product of how `rebuild_proxies` is used to recompute and [reattach the `Proxy-Authorization` header](https://github.com/psf/requests/blob/f2629e9e3c7ce3c3c8c025bcd8db551101cbc773/requests/sessions.py#L319-L328) to requests when redirected. Note this behavior has _only_ been observed to affect proxied requests when credentials are supplied in the URL user information component (e.g. `https://username:password@proxy:8080`).  **Current vulnerable behavior(s):**  1. HTTP \u2192 HTTPS: **leak** 2. HTTPS \u2192 HTTP: **no leak** 3. HTTPS \u2192 HTTPS: **leak** 4. HTTP \u2192 HTTP: **no leak**  For HTTP connections sent through the proxy, the proxy will identify the header in the request itself and remove it prior to forwarding to the destination server. However when sent over HTTPS, the `Proxy-Authorization` header must be sent in the CONNECT request as the proxy has no visibility into further tunneled requests. This results in Requests forwarding the header to the destination server unintentionally, allowing a malicious actor to potentially exfiltrate those credentials.  The reason this currently works for HTTPS connections in Requests is the `Proxy-Authorization` header is also handled by urllib3 with our usage of the ProxyManager in adapters.py with [`proxy_manager_for`](https://github.com/psf/requests/blob/f2629e9e3c7ce3c3c8c025bcd8db551101cbc773/requests/adapters.py#L199-L235). This will compute the required proxy headers in `proxy_headers` and pass them to the Proxy Manager, avoiding attaching them directly to the Request object. This will be our preferred option going forward for default usage.  ### Patches Starting in Requests v2.31.0, Requests will no longer attach this header to redirects with an HTTPS destination. This should have no negative impacts on the default behavior of the library as the proxy credentials are already properly being handled by urllib3's ProxyManager.  For users with custom adapters, this _may_ be potentially breaking if you were already working around this behavior. The previous functionality of `rebuild_proxies` doesn't make sense in any case, so we would encourage any users impacted to migrate any handling of Proxy-Authorization directly into their custom adapter.  ### Workarounds For users who are not able to update Requests immediately, there is one potential workaround.  You may disable redirects by setting `allow_redirects` to `False` on all calls through Requests top-level APIs. Note that if you're currently relying on redirect behaviors, you will need to capture the 3xx response codes and ensure a new request is made to the redirect destination. ``` import requests r = requests.get('http://github.com/', allow_redirects=False) ```  ### Credits  This vulnerability was discovered and disclosed by the following individuals.  Dennis Brinkrolf, Haxolot (https://haxolot.com/) Tobias Funke, (tobiasfunke93@gmail.com)"
+          },
+          {
+            "id": "PYSEC-2026-1873",
+            "aliases": [
+              "CVE-2024-35195",
+              "GHSA-9wx4-h78v-vm56"
+            ],
+            "package": "requests",
+            "version": "2.19.1",
+            "fix_versions": [
+              "2.32.0"
+            ],
+            "description": "When using a `requests.Session`, if the first request to a given origin is made with `verify=False`, TLS certificate verification may remain disabled for all subsequent requests to that origin, even if `verify=True` is explicitly specified later.  This occurs because the underlying connection is reused from the session's connection pool, causing the initial TLS verification setting to persist for the lifetime of the pooled connection. As a result, applications may unintentionally send requests without certificate verification, leading to potential man-in-the-middle attacks and compromised confidentiality or integrity.  This behavior affects versions of `requests` prior to 2.32.0."
+          },
+          {
+            "id": "PYSEC-2026-1872",
+            "aliases": [
+              "CVE-2024-47081",
+              "GHSA-9hjg-9r4m-mvj7"
+            ],
+            "package": "requests",
+            "version": "2.19.1",
+            "fix_versions": [
+              "2.32.4"
+            ],
+            "description": "### Impact  Due to a URL parsing issue, Requests releases prior to 2.32.4 may leak .netrc credentials to third parties for specific maliciously-crafted URLs.  ### Workarounds For older versions of Requests, use of the .netrc file can be disabled with `trust_env=False` on your Requests Session ([docs](https://requests.readthedocs.io/en/latest/api/#requests.Session.trust_env)).  ### References https://github.com/psf/requests/pull/6965 https://seclists.org/fulldisclosure/2025/Jun/2"
+          },
+          {
+            "id": "PYSEC-2026-2275",
+            "aliases": [
+              "CVE-2026-25645",
+              "GHSA-gc5v-m9x4-r6x2"
+            ],
+            "package": "requests",
+            "version": "2.19.1",
+            "fix_versions": [
+              "2.33.0"
+            ],
+            "description": "### Impact The `requests.utils.extract_zipped_paths()` utility function uses a predictable filename when extracting files from zip archives into the system temporary directory. If the target file already exists, it is reused without validation. A local attacker with write access to the temp directory could pre-create a malicious file that would be loaded in place of the legitimate one.  ### Affected usages **Standard usage of the Requests library is not affected by this vulnerability.** Only applications that call `extract_zipped_paths()` directly are impacted.  ### Remediation Upgrade to at least Requests 2.33.0, where the library now extracts files to a non-deterministic location.  If developers are unable to upgrade, they can set `TMPDIR` in their environment to a directory with restricted write access."
+          }
+        ],
+        "raw_finding_count": 10,
+        "finding_count": 5,
+        "scope": "Scan-only direct dependency fixture. No transitive dependency coverage."
+      },
+      "dast": {
+        "tool": "SecureFlow HTTP probes",
+        "status": "completed",
+        "mode": "vulnerable",
+        "checks": [
+          {
+            "scenario": "idor",
+            "exploitable": true,
+            "evidence": "Cross-user order request: HTTP 200"
+          },
+          {
+            "scenario": "sqli",
+            "exploitable": true,
+            "evidence": "SQLi search: HTTP 200, hidden product returned=True"
+          },
+          {
+            "scenario": "xss",
+            "exploitable": true,
+            "evidence": "Raw executable HTML reflected=True",
+            "limitation": "HTTP reflection probe; does not execute JavaScript in a browser."
+          },
+          {
+            "scenario": "auth",
+            "exploitable": true,
+            "evidence": "Unsigned identity header: HTTP 200"
+          },
+          {
+            "scenario": "race",
+            "exploitable": true,
+            "evidence": "Two parallel redemptions: 2 accepted",
+            "limitation": "HTTP scheduling varies; deterministic concurrency regression also runs."
+          }
+        ],
+        "finding_count": 5
+      }
+    },
+    "regression": {
+      "status": "pass",
+      "exit_code": 0
+    },
+    "zap": {
+      "status": "not_run",
+      "reason": "Optional Docker workflow is configured separately."
+    }
+  },
+  "fixed": {
+    "generated_at": "2026-10-04T10:33:12.033884+00:00",
+    "mode": "fixed",
+    "source_sha256": "1a33b0c8ece8a0d9e8c8e3d7946bcc471feab49e5e4a4f805f8d2eff35a7053b",
+    "gate": "pass",
+    "scans": {
+      "sast": {
+        "tool": "Semgrep custom rule",
+        "status": "completed",
+        "exit_code": 0,
+        "findings": [],
+        "finding_count": 0,
+        "scope": "One custom SQL construction rule on lab/fixed_sql.py"
+      },
+      "sca": {
+        "tool": "pip-audit",
+        "status": "completed",
+        "exit_code": 0,
+        "findings": [],
+        "raw_finding_count": 0,
+        "finding_count": 0,
+        "scope": "Scan-only direct dependency fixture. No transitive dependency coverage."
+      },
+      "dast": {
+        "tool": "SecureFlow HTTP probes",
+        "status": "completed",
+        "mode": "fixed",
+        "checks": [
+          {
+            "scenario": "idor",
+            "exploitable": false,
+            "evidence": "Cross-user order request: HTTP 403"
+          },
+          {
+            "scenario": "sqli",
+            "exploitable": false,
+            "evidence": "SQLi search: HTTP 200, hidden product returned=False"
+          },
+          {
+            "scenario": "xss",
+            "exploitable": false,
+            "evidence": "Raw executable HTML reflected=False",
+            "limitation": "HTTP reflection probe; does not execute JavaScript in a browser."
+          },
+          {
+            "scenario": "auth",
+            "exploitable": false,
+            "evidence": "Unsigned identity header: HTTP 401"
+          },
+          {
+            "scenario": "race",
+            "exploitable": false,
+            "evidence": "Two parallel redemptions: 1 accepted",
+            "limitation": "HTTP scheduling varies; deterministic concurrency regression also runs."
+          }
+        ],
+        "finding_count": 0
+      }
+    },
+    "regression": {
+      "status": "pass",
+      "exit_code": 0
+    },
+    "zap": {
+      "status": "not_run",
+      "reason": "Optional Docker workflow is configured separately."
+    }
+  },
+  "test_count": 17,
+  "pipeline_run": {
+    "id": 37195707999,
+    "html_url": "https://github.com/wwhosjess/SecureFlow-AppSec-Lab/actions/runs/37195707999",
+    "head_sha": "4bccd4c82e60e5e309aaa87e9e4437b0027df2ce",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "evidence_path": "reports/hardening-2026-10-04",
+  "standalone_zap": {
+    "vulnerable": {
+      "run": {
+        "id": 37131531623,
+        "html_url": "https://github.com/wwhosjess/SecureFlow-AppSec-Lab/actions/runs/37131531623",
+        "head_sha": "abf996e425afb43f3cfa564fb25d820fcedf9a34",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-03T14:57:58Z",
+        "updated_at": "2026-10-03T15:00:30Z",
+        "mode": "vulnerable",
+        "zap_version": "2.17.0",
+        "docker_image": "ghcr.io/zaproxy/zaproxy:stable",
+        "docker_digest": "sha256:781a2bdaea47324e7bab583e2263f21d257b0aee61ed51521a5be45f5f5081ef",
+        "zap_exit_code": 2,
+        "severity_counts": {
+          "High": 3,
+          "Medium": 2,
+          "Low": 6,
+          "Informational": 1
+        },
+        "sha256": {
+          "zap.json": "26a897827b3d31b861e9f2c8cf4d00c86e67900a8b129b411c832a09f3bde6a9",
+          "zap.html": "73fada977422b96242d8873641e79207254d6ff4692eebf455470053cfeb2e35",
+          "exit-code.txt": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+          "scan-console.txt": "a6a1d79b7cc71472b9a05632d89c999af88f6bd3e734dfeaa1b18e2130e7df89"
+        }
+      },
+      "path": "reports/zap-2026-10-03/vulnerable",
+      "raw": {
+        "@programName": "ZAP",
+        "@version": "2.17.0",
+        "@generated": "Sat, 3 Oct 2026 15:00:25",
+        "created": "2026-10-03T15:00:25.721295211Z",
+        "insights": [
+          {
+            "level": "Low",
+            "reason": "Warning",
+            "site": "",
+            "key": "insight.log.warn",
+            "description": "ZAP warnings logged - see the zap.log file for details",
+            "statistic": "4"
+          },
+          {
+            "level": "Info",
+            "reason": "Informational",
+            "site": "",
+            "key": "insight.network.failure",
+            "description": "Percentage of network failures",
+            "statistic": "1"
+          },
+          {
+            "level": "Info",
+            "reason": "Informational",
+            "site": "http://127.0.0.1:5050",
+            "key": "insight.code.2xx",
+            "description": "Percentage of responses with status code 2xx",
+            "statistic": "62"
+          },
+          {
+            "level": "Info",
+            "reason": "Informational",
+            "site": "http://127.0.0.1:5050",
+            "key": "insight.code.4xx",
+            "description": "Percentage of responses with status code 4xx",
+            "statistic": "31"
+          },
+          {
+            "level": "Info",
+            "reason": "Informational",
+            "site": "http://127.0.0.1:5050",
+            "key": "insight.code.5xx",
+            "description": "Percentage of responses with status code 5xx",
+            "statistic": "6"
+          },
+          {
+            "level": "Info",
+            "reason": "Informational",
+            "site": "http://127.0.0.1:5050",
+            "key": "insight.endpoint.ctype.application/json",
+            "description": "Percentage of endpoints with content type application/json",
+            "statistic": "60"
+          },
+          {
+            "level": "Info",
+            "reason": "Informational",
+            "site": "http://127.0.0.1:5050",
+            "key": "insight.endpoint.ctype.text/html",
+            "description": "Percentage of endpoints with content type text/html",
+            "statistic": "40"
+          },
+          {
+            "level": "Info",
+            "reason": "Informational",
+            "site": "http://127.0.0.1:5050",
+            "key": "insight.endpoint.method.GET",
+            "description": "Percentage of endpoints with method GET",
+            "statistic": "100"
+          },
+          {
+            "level": "Info",
+            "reason": "Informational",
+            "site": "http://127.0.0.1:5050",
+            "key": "insight.endpoint.total",
+            "description": "Count of total endpoints",
+            "statistic": "5"
+          }
+        ],
+        "site": [
+          {
+            "@name": "http://127.0.0.1:5050",
+            "@host": "127.0.0.1",
+            "@port": "5050",
+            "@ssl": "false",
+            "alerts": [
+              {
+                "pluginid": "40026",
+                "alertRef": "40026",
+                "alert": "Cross Site Scripting (DOM Based)",
+                "name": "Cross Site Scripting (DOM Based)",
+                "riskcode": "3",
+                "confidence": "3",
+                "riskdesc": "High (High)",
+                "desc": "<p>Cross-site Scripting (XSS) is an attack technique that involves echoing attacker-supplied code into a user's browser instance. A browser instance can be a standard web browser client, or a browser object embedded in a software product such as the browser within WinAmp, an RSS reader, or an email client. The code itself is usually written in HTML/JavaScript, but may also extend to VBScript, ActiveX, Java, Flash, or any other browser-supported technology.</p><p>When an attacker gets a user's browser to execute his/her code, the code will run within the security context (or zone) of the hosting web site. With this level of privilege, the code has the ability to read, modify and transmit any sensitive data accessible by the browser. A Cross-site Scripted user could have his/her account hijacked (cookie theft), their browser redirected to another location, or possibly shown fraudulent content delivered by the web site they are visiting. Cross-site Scripting attacks essentially compromise the trust relationship between a user and the web site. Applications utilizing browser object instances which load content from the file system may execute code under the local machine zone allowing for system compromise.</p><p></p><p>There are three types of Cross-site Scripting attacks: non-persistent, persistent and DOM-based.</p><p>Non-persistent attacks and DOM-based attacks require a user to either visit a specially crafted link laced with malicious code, or visit a malicious web page containing a web form, which when posted to the vulnerable site, will mount the attack. Using a malicious form will oftentimes take place when the vulnerable resource only accepts HTTP POST requests. In such a case, the form can be submitted automatically, without the victim's knowledge (e.g. by using JavaScript). Upon clicking on the malicious link or submitting the malicious form, the XSS payload will get echoed back and will get interpreted by the user's browser and execute. Another technique to send almost arbitrary requests (GET and POST) is by using an embedded client, such as Adobe Flash.</p><p>Persistent attacks occur when the malicious code is submitted to a web site where it's stored for a period of time. Examples of an attacker's favorite targets often include message board posts, web mail messages, and web chat software. The unsuspecting user is not required to interact with any additional site/link (e.g. an attacker site or a malicious link sent via email), just simply view the web page containing the code.</p>",
+                "instances": [
+                  {
+                    "id": "45",
+                    "uri": "http://127.0.0.1:5050/reflect?q=%3Cscript%3Ealert(5397)%3C/script%3E",
+                    "nodeName": "http://127.0.0.1:5050/reflect (q)",
+                    "method": "GET",
+                    "param": "q",
+                    "attack": "<script>alert(5397)</script>",
+                    "evidence": "",
+                    "otherinfo": "The following steps were done to trigger the DOM XSS:\nWith <PAYLOAD_1> as: %3Cscript%3Ealert(5397)%3C/script%3E\nAccess: http://127.0.0.1:5050/reflect?q=<PAYLOAD_1>\n"
+                  }
+                ],
+                "count": "1",
+                "systemic": false,
+                "solution": "<p>Phase: Architecture and Design</p><p>Use a vetted library or framework that does not allow this weakness to occur or provides constructs that make this weakness easier to avoid.</p><p>Examples of libraries and frameworks that make it easier to generate properly encoded output include Microsoft's Anti-XSS library, the OWASP ESAPI Encoding module, and Apache Wicket.</p><p></p><p>Phases: Implementation; Architecture and Design</p><p>Understand the context in which your data will be used and the encoding that will be expected. This is especially important when transmitting data between different components, or when generating outputs that can contain multiple encodings at the same time, such as web pages or multi-part mail messages. Study all expected communication protocols and data representations to determine the required encoding strategies.</p><p>For any data that will be output to another web page, especially any data that was received from external inputs, use the appropriate encoding on all non-alphanumeric characters.</p><p>Consult the XSS Prevention Cheat Sheet for more details on the types of encoding and escaping that are needed.</p><p></p><p>Phase: Architecture and Design</p><p>For any security checks that are performed on the client side, ensure that these checks are duplicated on the server side, in order to avoid CWE-602. Attackers can bypass the client-side checks by modifying values after the checks have been performed, or by changing the client to remove the client-side checks entirely. Then, these modified values would be submitted to the server.</p><p></p><p>If available, use structured mechanisms that automatically enforce the separation between data and code. These mechanisms may be able to provide the relevant quoting, encoding, and validation automatically, instead of relying on the developer to provide this capability at every point where output is generated.</p><p></p><p>Phase: Implementation</p><p>For every web page that is generated, use and specify a character encoding such as ISO-8859-1 or UTF-8. When an encoding is not specified, the web browser may choose a different encoding by guessing which encoding is actually being used by the web page. This can cause the web browser to treat certain sequences as special, opening up the client to subtle XSS attacks. See CWE-116 for more mitigations related to encoding/escaping.</p><p></p><p>To help mitigate XSS attacks against the user's session cookie, set the session cookie to be HttpOnly. In browsers that support the HttpOnly feature (such as more recent versions of Internet Explorer and Firefox), this attribute can prevent the user's session cookie from being accessible to malicious client-side scripts that use document.cookie. This is not a complete solution, since HttpOnly is not supported by all browsers. More importantly, XMLHTTPRequest and other powerful browser technologies provide read access to HTTP headers, including the Set-Cookie header in which the HttpOnly flag is set.</p><p></p><p>Assume all input is malicious. Use an \"accept known good\" input validation strategy, i.e., use an allow list of acceptable inputs that strictly conform to specifications. Reject any input that does not strictly conform to specifications, or transform it into something that does. Do not rely exclusively on looking for malicious or malformed inputs (i.e., do not rely on a deny list). However, deny lists can be useful for detecting potential attacks or determining which inputs are so malformed that they should be rejected outright.</p><p></p><p>When performing input validation, consider all potentially relevant properties, including length, type of input, the full range of acceptable values, missing or extra inputs, syntax, consistency across related fields, and conformance to business rules. As an example of business rule logic, \"boat\" may be syntactically valid because it only contains alphanumeric characters, but it is not valid if you are expecting colors such as \"red\" or \"blue.\"</p><p></p><p>Ensure that you perform input validation at well-defined interfaces within the application. This will help protect the application even if a component is reused or moved elsewhere.</p><p>\t</p>",
+                "otherinfo": "<p>The following steps were done to trigger the DOM XSS:</p><p>With <PAYLOAD_1> as: %3Cscript%3Ealert(5397)%3C/script%3E</p><p>Access: http://127.0.0.1:5050/reflect?q=<PAYLOAD_1></p><p></p>",
+                "reference": "<p>https://owasp.org/www-community/attacks/xss/</p><p>https://cwe.mitre.org/data/definitions/79.html</p>",
+                "cweid": "79",
+                "wascid": "8",
+                "sourceid": "239"
+              },
+              {
+                "pluginid": "40012",
+                "alertRef": "40012",
+                "alert": "Cross Site Scripting (Reflected)",
+                "name": "Cross Site Scripting (Reflected)",
+                "riskcode": "3",
+                "confidence": "2",
+                "riskdesc": "High (Medium)",
+                "desc": "<p>Cross-site Scripting (XSS) is an attack technique that involves echoing attacker-supplied code into a user's browser instance. A browser instance can be a standard web browser client, or a browser object embedded in a software product such as the browser within WinAmp, an RSS reader, or an email client. The code itself is usually written in HTML/JavaScript, but may also extend to VBScript, ActiveX, Java, Flash, or any other browser-supported technology.</p><p>When an attacker gets a user's browser to execute his/her code, the code will run within the security context (or zone) of the hosting web site. With this level of privilege, the code has the ability to read, modify and transmit any sensitive data accessible by the browser. A Cross-site Scripted user could have his/her account hijacked (cookie theft), their browser redirected to another location, or possibly shown fraudulent content delivered by the web site they are visiting. Cross-site Scripting attacks essentially compromise the trust relationship between a user and the web site. Applications utilizing browser object instances which load content from the file system may execute code under the local machine zone allowing for system compromise.</p><p></p><p>There are three types of Cross-site Scripting attacks: non-persistent, persistent and DOM-based.</p><p>Non-persistent attacks and DOM-based attacks require a user to either visit a specially crafted link laced with malicious code, or visit a malicious web page containing a web form, which when posted to the vulnerable site, will mount the attack. Using a malicious form will oftentimes take place when the vulnerable resource only accepts HTTP POST requests. In such a case, the form can be submitted automatically, without the victim's knowledge (e.g. by using JavaScript). Upon clicking on the malicious link or submitting the malicious form, the XSS payload will get echoed back and will get interpreted by the user's browser and execute. Another technique to send almost arbitrary requests (GET and POST) is by using an embedded client, such as Adobe Flash.</p><p>Persistent attacks occur when the malicious code is submitted to a web site where it's stored for a period of time. Examples of an attacker's favorite targets often include message board posts, web mail messages, and web chat software. The unsuspecting user is not required to interact with any additional site/link (e.g. an attacker site or a malicious link sent via email), just simply view the web page containing the code.</p>",
+                "instances": [
+                  {
+                    "id": "44",
+                    "uri": "http://127.0.0.1:5050/reflect?q=%3C%2Fp%3E%3CscrIpt%3Ealert%281%29%3B%3C%2FscRipt%3E%3Cp%3E",
+                    "nodeName": "http://127.0.0.1:5050/reflect (q)",
+                    "method": "GET",
+                    "param": "q",
+                    "attack": "</p><scrIpt>alert(1);</scRipt><p>",
+                    "evidence": "</p><scrIpt>alert(1);</scRipt><p>",
+                    "otherinfo": ""
+                  }
+                ],
+                "count": "1",
+                "systemic": false,
+                "solution": "<p>Phase: Architecture and Design</p><p>Use a vetted library or framework that does not allow this weakness to occur or provides constructs that make this weakness easier to avoid.</p><p>Examples of libraries and frameworks that make it easier to generate properly encoded output include Microsoft's Anti-XSS library, the OWASP ESAPI Encoding module, and Apache Wicket.</p><p></p><p>Phases: Implementation; Architecture and Design</p><p>Understand the context in which your data will be used and the encoding that will be expected. This is especially important when transmitting data between different components, or when generating outputs that can contain multiple encodings at the same time, such as web pages or multi-part mail messages. Study all expected communication protocols and data representations to determine the required encoding strategies.</p><p>For any data that will be output to another web page, especially any data that was received from external inputs, use the appropriate encoding on all non-alphanumeric characters.</p><p>Consult the XSS Prevention Cheat Sheet for more details on the types of encoding and escaping that are needed.</p><p></p><p>Phase: Architecture and Design</p><p>For any security checks that are performed on the client side, ensure that these checks are duplicated on the server side, in order to avoid CWE-602. Attackers can bypass the client-side checks by modifying values after the checks have been performed, or by changing the client to remove the client-side checks entirely. Then, these modified values would be submitted to the server.</p><p></p><p>If available, use structured mechanisms that automatically enforce the separation between data and code. These mechanisms may be able to provide the relevant quoting, encoding, and validation automatically, instead of relying on the developer to provide this capability at every point where output is generated.</p><p></p><p>Phase: Implementation</p><p>For every web page that is generated, use and specify a character encoding such as ISO-8859-1 or UTF-8. When an encoding is not specified, the web browser may choose a different encoding by guessing which encoding is actually being used by the web page. This can cause the web browser to treat certain sequences as special, opening up the client to subtle XSS attacks. See CWE-116 for more mitigations related to encoding/escaping.</p><p></p><p>To help mitigate XSS attacks against the user's session cookie, set the session cookie to be HttpOnly. In browsers that support the HttpOnly feature (such as more recent versions of Internet Explorer and Firefox), this attribute can prevent the user's session cookie from being accessible to malicious client-side scripts that use document.cookie. This is not a complete solution, since HttpOnly is not supported by all browsers. More importantly, XMLHTTPRequest and other powerful browser technologies provide read access to HTTP headers, including the Set-Cookie header in which the HttpOnly flag is set.</p><p></p><p>Assume all input is malicious. Use an \"accept known good\" input validation strategy, i.e., use an allow list of acceptable inputs that strictly conform to specifications. Reject any input that does not strictly conform to specifications, or transform it into something that does. Do not rely exclusively on looking for malicious or malformed inputs (i.e., do not rely on a deny list). However, deny lists can be useful for detecting potential attacks or determining which inputs are so malformed that they should be rejected outright.</p><p></p><p>When performing input validation, consider all potentially relevant properties, including length, type of input, the full range of acceptable values, missing or extra inputs, syntax, consistency across related fields, and conformance to business rules. As an example of business rule logic, \"boat\" may be syntactically valid because it only contains alphanumeric characters, but it is not valid if you are expecting colors such as \"red\" or \"blue.\"</p><p></p><p>Ensure that you perform input validation at well-defined interfaces within the application. This will help protect the application even if a component is reused or moved elsewhere.</p><p>\t</p>",
+                "otherinfo": "",
+                "reference": "<p>https://owasp.org/www-community/attacks/xss/</p><p>https://cwe.mitre.org/data/definitions/79.html</p>",
+                "cweid": "79",
+                "wascid": "8",
+                "sourceid": "120"
+              },
+              {
+                "pluginid": "43",
+                "alertRef": "43",
+                "alert": "Source Code Disclosure - File Inclusion",
+                "name": "Source Code Disclosure - File Inclusion",
+                "riskcode": "3",
+                "confidence": "2",
+                "riskdesc": "High (Medium)",
+                "desc": "<p>The Path Traversal attack technique allows an attacker access to files, directories, and commands that potentially reside outside the web document root directory. An attacker may manipulate a URL in such a way that the web site will execute or reveal the contents of arbitrary files anywhere on the web server. Any device that exposes an HTTP-based interface is potentially vulnerable to Path Traversal.</p><p></p><p>Most web sites restrict user access to a specific portion of the file-system, typically called the \"web document root\" or \"CGI root\" directory. These directories contain the files intended for user access and the executable necessary to drive web application functionality. To access files or execute commands anywhere on the file-system, Path Traversal attacks will utilize the ability of special-characters sequences.</p><p></p><p>The most basic Path Traversal attack uses the \"../\" special-character sequence to alter the resource location requested in the URL. Although most popular web servers will prevent this technique from escaping the web document root, alternate encodings of the \"../\" sequence may help bypass the security filters. These method variations include valid and invalid Unicode-encoding (\"..%u2216\" or \"..%c0%af\") of the forward slash character, backslash characters (\"..\\\") on Windows-based servers, URL encoded characters \"%2e%2e%2f\"), and double URL encoding (\"..%255c\") of the backslash character.</p><p></p><p>Even if the web server properly restricts Path Traversal attempts in the URL path, a web application itself may still be vulnerable due to improper handling of user-supplied input. This is a common problem of web applications that use template mechanisms or load static text from files. In variations of the attack, the original URL parameter value is substituted with the file name of one of the web application's dynamic scripts. Consequently, the results can reveal source code because the file is interpreted as text instead of an executable script. These techniques often employ additional special characters such as the dot (\".\") to reveal the listing of the current working directory, or \"%00\" NULL characters in order to bypass rudimentary file extension checks.</p>",
+                "instances": [
+                  {
+                    "id": "46",
+                    "uri": "http://127.0.0.1:5050/reflect?q=hello",
+                    "nodeName": "http://127.0.0.1:5050/reflect (q)",
+                    "method": "GET",
+                    "param": "q",
+                    "attack": "reflect",
+                    "evidence": "",
+                    "otherinfo": "The output for the source code filename [reflect] differs sufficiently from that of the random parameter [eesnccdlgoeslmrxjajmfhnlaltydxyvimwhpz], at [54%], compared to a threshold of [75%]"
+                  }
+                ],
+                "count": "1",
+                "systemic": false,
+                "solution": "<p>Assume all input is malicious. Use an \"accept known good\" input validation strategy, i.e., use an allow list of acceptable inputs that strictly conform to specifications. Reject any input that does not strictly conform to specifications, or transform it into something that does. Do not rely exclusively on looking for malicious or malformed inputs (i.e., do not rely on a deny list). However, deny lists can be useful for detecting potential attacks or determining which inputs are so malformed that they should be rejected outright.</p><p></p><p>When performing input validation, consider all potentially relevant properties, including length, type of input, the full range of acceptable values, missing or extra inputs, syntax, consistency across related fields, and conformance to business rules. As an example of business rule logic, \"boat\" may be syntactically valid because it only contains alphanumeric characters, but it is not valid if you are expecting colors such as \"red\" or \"blue.\"</p><p></p><p>For filenames, use stringent allow lists that limit the character set to be used. If feasible, only allow a single \".\" character in the filename to avoid weaknesses, and exclude directory separators such as \"/\". Use an allow list of allowable file extensions.</p><p></p><p>Warning: if you attempt to cleanse your data, then do so that the end result is not in the form that can be dangerous. A sanitizing mechanism can remove characters such as '.' and ';' which may be required for some exploits. An attacker can try to fool the sanitizing mechanism into \"cleaning\" data into a dangerous form. Suppose the attacker injects a '.' inside a filename (e.g. \"sensi.tiveFile\") and the sanitizing mechanism removes the character resulting in the valid filename, \"sensitiveFile\". If the input data are now assumed to be safe, then the file may be compromised. </p><p></p><p>Inputs should be decoded and canonicalized to the application's current internal representation before being validated. Make sure that your application does not decode the same input twice. Such errors could be used to bypass allow list schemes by introducing dangerous inputs after they have been checked.</p><p></p><p>Use a built-in path canonicalization function (such as realpath() in C) that produces the canonical version of the pathname, which effectively removes \"..\" sequences and symbolic links.</p><p></p><p>Run your code using the lowest privileges that are required to accomplish the necessary tasks. If possible, create isolated accounts with limited privileges that are only used for a single task. That way, a successful attack will not immediately give the attacker access to the rest of the software or its environment. For example, database applications rarely need to run as the database administrator, especially in day-to-day operations.</p><p></p><p>When the set of acceptable objects, such as filenames or URLs, is limited or known, create a mapping from a set of fixed input values (such as numeric IDs) to the actual filenames or URLs, and reject all other inputs.</p><p></p><p>Run your code in a \"jail\" or similar sandbox environment that enforces strict boundaries between the process and the operating system. This may effectively restrict which files can be accessed in a particular directory or which commands can be executed by your software.</p><p></p><p>OS-level examples include the Unix chroot jail, AppArmor, and SELinux. In general, managed code may provide some protection. For example, java.io.FilePermission in the Java SecurityManager allows you to specify restrictions on file operations.</p><p></p><p>This may not be a feasible solution, and it only limits the impact to the operating system; the rest of your application may still be subject to compromise.</p><p></p>",
+                "otherinfo": "<p>The output for the source code filename [reflect] differs sufficiently from that of the random parameter [eesnccdlgoeslmrxjajmfhnlaltydxyvimwhpz], at [54%], compared to a threshold of [75%]</p>",
+                "reference": "<p>https://owasp.org/www-community/attacks/Path_Traversal</p><p>https://cwe.mitre.org/data/definitions/22.html</p>",
+                "cweid": "541",
+                "wascid": "33",
+                "sourceid": "647"
+              },
+              {
+                "pluginid": "10038",
+                "alertRef": "10038-1",
+                "alert": "Content Security Policy (CSP) Header Not Set",
+                "name": "Content Security Policy (CSP) Header Not Set",
+                "riskcode": "2",
+                "confidence": "3",
+                "riskdesc": "Medium (High)",
+                "desc": "<p>Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page \u2014 covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</p>",
+                "instances": [
+                  {
+                    "id": "13",
+                    "uri": "http://127.0.0.1:5050",
+                    "nodeName": "http://127.0.0.1:5050",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "1",
+                    "uri": "http://127.0.0.1:5050/",
+                    "nodeName": "http://127.0.0.1:5050/",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "36",
+                    "uri": "http://127.0.0.1:5050/reflect?q=hello",
+                    "nodeName": "http://127.0.0.1:5050/reflect (q)",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": ""
+                  }
+                ],
+                "count": "3",
+                "systemic": false,
+                "solution": "<p>Ensure that your web server, application server, load balancer, etc. is configured to set the Content-Security-Policy header.</p>",
+                "otherinfo": "",
+                "reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP</p><p>https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html</p><p>https://www.w3.org/TR/CSP/</p><p>https://w3c.github.io/webappsec-csp/</p><p>https://web.dev/articles/csp</p><p>https://caniuse.com/#feat=contentsecuritypolicy</p><p>https://content-security-policy.com/</p>",
+                "cweid": "693",
+                "wascid": "15",
+                "sourceid": "8"
+              },
+              {
+                "pluginid": "10020",
+                "alertRef": "10020-1",
+                "alert": "Missing Anti-clickjacking Header",
+                "name": "Missing Anti-clickjacking Header",
+                "riskcode": "2",
+                "confidence": "2",
+                "riskdesc": "Medium (Medium)",
+                "desc": "<p>The response does not protect against 'ClickJacking' attacks. It should include either Content-Security-Policy with 'frame-ancestors' directive or X-Frame-Options.</p>",
+                "instances": [
+                  {
+                    "id": "11",
+                    "uri": "http://127.0.0.1:5050",
+                    "nodeName": "http://127.0.0.1:5050",
+                    "method": "GET",
+                    "param": "x-frame-options",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "0",
+                    "uri": "http://127.0.0.1:5050/",
+                    "nodeName": "http://127.0.0.1:5050/",
+                    "method": "GET",
+                    "param": "x-frame-options",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "34",
+                    "uri": "http://127.0.0.1:5050/reflect?q=hello",
+                    "nodeName": "http://127.0.0.1:5050/reflect (q)",
+                    "method": "GET",
+                    "param": "x-frame-options",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": ""
+                  }
+                ],
+                "count": "3",
+                "systemic": false,
+                "solution": "<p>Modern Web browsers support the Content-Security-Policy and X-Frame-Options HTTP headers. Ensure one of them is set on all web pages returned by your site/app.</p><p>If you expect the page to be framed only by pages on your server (e.g. it's part of a FRAMESET) then you'll want to use SAMEORIGIN, otherwise if you never expect the page to be framed, you should use DENY. Alternatively consider implementing Content Security Policy's \"frame-ancestors\" directive.</p>",
+                "otherinfo": "",
+                "reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Frame-Options</p>",
+                "cweid": "1021",
+                "wascid": "15",
+                "sourceid": "8"
+              },
+              {
+                "pluginid": "90004",
+                "alertRef": "90004-2",
+                "alert": "Cross-Origin-Embedder-Policy Header Missing or Invalid",
+                "name": "Cross-Origin-Embedder-Policy Header Missing or Invalid",
+                "riskcode": "1",
+                "confidence": "2",
+                "riskdesc": "Low (Medium)",
+                "desc": "<p>Cross-Origin-Embedder-Policy header is a response header that prevents a document from loading any cross-origin resources that don't explicitly grant the document permission (using CORP or CORS).</p>",
+                "instances": [
+                  {
+                    "id": "21",
+                    "uri": "http://127.0.0.1:5050",
+                    "nodeName": "http://127.0.0.1:5050",
+                    "method": "GET",
+                    "param": "Cross-Origin-Embedder-Policy",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "7",
+                    "uri": "http://127.0.0.1:5050/",
+                    "nodeName": "http://127.0.0.1:5050/",
+                    "method": "GET",
+                    "param": "Cross-Origin-Embedder-Policy",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "42",
+                    "uri": "http://127.0.0.1:5050/reflect?q=hello",
+                    "nodeName": "http://127.0.0.1:5050/reflect (q)",
+                    "method": "GET",
+                    "param": "Cross-Origin-Embedder-Policy",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": ""
+                  }
+                ],
+                "count": "3",
+                "systemic": false,
+                "solution": "<p>Ensure that the application/web server sets the Cross-Origin-Embedder-Policy header appropriately, and that it sets the Cross-Origin-Embedder-Policy header to 'require-corp' for documents.</p><p>If possible, ensure that the end user uses a standards-compliant and modern web browser that supports the Cross-Origin-Embedder-Policy header (https://caniuse.com/mdn-http_headers_cross-origin-embedder-policy).</p>",
+                "otherinfo": "",
+                "reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy</p>",
+                "cweid": "693",
+                "wascid": "14",
+                "sourceid": "8"
+              },
+              {
+                "pluginid": "90004",
+                "alertRef": "90004-3",
+                "alert": "Cross-Origin-Opener-Policy Header Missing or Invalid",
+                "name": "Cross-Origin-Opener-Policy Header Missing or Invalid",
+                "riskcode": "1",
+                "confidence": "2",
+                "riskdesc": "Low (Medium)",
+                "desc": "<p>Cross-Origin-Opener-Policy header is a response header that allows a site to control if others included documents share the same browsing context. Sharing the same browsing context with untrusted documents might lead to data leak.</p>",
+                "instances": [
+                  {
+                    "id": "23",
+                    "uri": "http://127.0.0.1:5050",
+                    "nodeName": "http://127.0.0.1:5050",
+                    "method": "GET",
+                    "param": "Cross-Origin-Opener-Policy",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "8",
+                    "uri": "http://127.0.0.1:5050/",
+                    "nodeName": "http://127.0.0.1:5050/",
+                    "method": "GET",
+                    "param": "Cross-Origin-Opener-Policy",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "43",
+                    "uri": "http://127.0.0.1:5050/reflect?q=hello",
+                    "nodeName": "http://127.0.0.1:5050/reflect (q)",
+                    "method": "GET",
+                    "param": "Cross-Origin-Opener-Policy",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": ""
+                  }
+                ],
+                "count": "3",
+                "systemic": false,
+                "solution": "<p>Ensure that the application/web server sets the Cross-Origin-Opener-Policy header appropriately, and that it sets the Cross-Origin-Opener-Policy header to 'same-origin' for documents.</p><p>'same-origin-allow-popups' is considered as less secured and should be avoided.</p><p>If possible, ensure that the end user uses a standards-compliant and modern web browser that supports the Cross-Origin-Opener-Policy header (https://caniuse.com/mdn-http_headers_cross-origin-opener-policy).</p>",
+                "otherinfo": "",
+                "reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Opener-Policy</p>",
+                "cweid": "693",
+                "wascid": "14",
+                "sourceid": "8"
+              },
+              {
+                "pluginid": "90004",
+                "alertRef": "90004-1",
+                "alert": "Cross-Origin-Resource-Policy Header Missing or Invalid",
+                "name": "Cross-Origin-Resource-Policy Header Missing or Invalid",
+                "riskcode": "1",
+                "confidence": "2",
+                "riskdesc": "Low (Medium)",
+                "desc": "<p>Cross-Origin-Resource-Policy header is an opt-in header designed to counter side-channels attacks like Spectre. Resource should be specifically set as shareable amongst different origins.</p>",
+                "instances": [
+                  {
+                    "id": "20",
+                    "uri": "http://127.0.0.1:5050",
+                    "nodeName": "http://127.0.0.1:5050",
+                    "method": "GET",
+                    "param": "Cross-Origin-Resource-Policy",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "6",
+                    "uri": "http://127.0.0.1:5050/",
+                    "nodeName": "http://127.0.0.1:5050/",
+                    "method": "GET",
+                    "param": "Cross-Origin-Resource-Policy",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "41",
+                    "uri": "http://127.0.0.1:5050/reflect?q=hello",
+                    "nodeName": "http://127.0.0.1:5050/reflect (q)",
+                    "method": "GET",
+                    "param": "Cross-Origin-Resource-Policy",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "35",
+                    "uri": "http://127.0.0.1:5050/search?q=head",
+                    "nodeName": "http://127.0.0.1:5050/search (q)",
+                    "method": "GET",
+                    "param": "Cross-Origin-Resource-Policy",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": ""
+                  }
+                ],
+                "count": "4",
+                "systemic": false,
+                "solution": "<p>Ensure that the application/web server sets the Cross-Origin-Resource-Policy header appropriately, and that it sets the Cross-Origin-Resource-Policy header to 'same-origin' for all web pages.</p><p>'same-site' is considered as less secured and should be avoided.</p><p>If resources must be shared, set the header to 'cross-origin'.</p><p>If possible, ensure that the end user uses a standards-compliant and modern web browser that supports the Cross-Origin-Resource-Policy header (https://caniuse.com/mdn-http_headers_cross-origin-resource-policy).</p>",
+                "otherinfo": "",
+                "reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy</p>",
+                "cweid": "693",
+                "wascid": "14",
+                "sourceid": "8"
+              },
+              {
+                "pluginid": "10063",
+                "alertRef": "10063-1",
+                "alert": "Permissions Policy Header Not Set",
+                "name": "Permissions Policy Header Not Set",
+                "riskcode": "1",
+                "confidence": "2",
+                "riskdesc": "Low (Medium)",
+                "desc": "<p>Permissions Policy Header is an added layer of security that helps to restrict from unauthorized access or usage of browser/client features by web resources. This policy ensures the user privacy by limiting or specifying the features of the browsers can be used by the web resources. Permissions Policy provides a set of standard HTTP headers that allow website owners to limit which features of browsers can be used by the page such as camera, microphone, location, full screen etc.</p>",
+                "instances": [
+                  {
+                    "id": "19",
+                    "uri": "http://127.0.0.1:5050",
+                    "nodeName": "http://127.0.0.1:5050",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "5",
+                    "uri": "http://127.0.0.1:5050/",
+                    "nodeName": "http://127.0.0.1:5050/",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "40",
+                    "uri": "http://127.0.0.1:5050/reflect?q=hello",
+                    "nodeName": "http://127.0.0.1:5050/reflect (q)",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": ""
+                  }
+                ],
+                "count": "3",
+                "systemic": false,
+                "solution": "<p>Ensure that your web server, application server, load balancer, etc. is configured to set the Permissions-Policy header.</p>",
+                "otherinfo": "",
+                "reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy</p><p>https://developer.chrome.com/blog/feature-policy/</p><p>https://scotthelme.co.uk/a-new-security-header-feature-policy/</p><p>https://w3c.github.io/webappsec-feature-policy/</p><p>https://www.smashingmagazine.com/2018/12/feature-policy/</p>",
+                "cweid": "693",
+                "wascid": "15",
+                "sourceid": "8"
+              },
+              {
+                "pluginid": "10036",
+                "alertRef": "10036-2",
+                "alert": "Server Leaks Version Information via \"Server\" HTTP Response Header Field",
+                "name": "Server Leaks Version Information via \"Server\" HTTP Response Header Field",
+                "riskcode": "1",
+                "confidence": "3",
+                "riskdesc": "Low (High)",
+                "desc": "<p>The web/application server is leaking version information via the \"Server\" HTTP response header. Access to such information may facilitate attackers identifying other vulnerabilities your web/application server is subject to.</p>",
+                "instances": [
+                  {
+                    "id": "15",
+                    "uri": "http://127.0.0.1:5050",
+                    "nodeName": "http://127.0.0.1:5050",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "BaseHTTP/0.6 Python/3.12.14",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "2",
+                    "uri": "http://127.0.0.1:5050/",
+                    "nodeName": "http://127.0.0.1:5050/",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "BaseHTTP/0.6 Python/3.12.14",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "12",
+                    "uri": "http://127.0.0.1:5050/robots.txt",
+                    "nodeName": "http://127.0.0.1:5050/robots.txt",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "BaseHTTP/0.6 Python/3.12.14",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "31",
+                    "uri": "http://127.0.0.1:5050/search?q=head",
+                    "nodeName": "http://127.0.0.1:5050/search (q)",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "BaseHTTP/0.6 Python/3.12.14",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "9",
+                    "uri": "http://127.0.0.1:5050/sitemap.xml",
+                    "nodeName": "http://127.0.0.1:5050/sitemap.xml",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "BaseHTTP/0.6 Python/3.12.14",
+                    "otherinfo": ""
+                  }
+                ],
+                "count": "5",
+                "systemic": true,
+                "solution": "<p>Ensure that your web server, application server, load balancer, etc. is configured to suppress the \"Server\" header or provide generic details.</p>",
+                "otherinfo": "",
+                "reference": "<p>https://httpd.apache.org/docs/current/mod/core.html#servertokens</p><p>https://learn.microsoft.com/en-us/previous-versions/msp-n-p/ff648552(v=pandp.10)</p><p>https://www.troyhunt.com/shhh-dont-let-your-response-headers/</p>",
+                "cweid": "497",
+                "wascid": "13",
+                "sourceid": "8"
+              },
+              {
+                "pluginid": "10021",
+                "alertRef": "10021",
+                "alert": "X-Content-Type-Options Header Missing",
+                "name": "X-Content-Type-Options Header Missing",
+                "riskcode": "1",
+                "confidence": "2",
+                "riskdesc": "Low (Medium)",
+                "desc": "<p>The Anti-MIME-Sniffing header X-Content-Type-Options was not set to 'nosniff'. This allows older versions of Internet Explorer and Chrome to perform MIME-sniffing on the response body, potentially causing the response body to be interpreted and displayed as a content type other than the declared content type. Current (early 2014) and legacy versions of Firefox will use the declared content type (if one is set), rather than performing MIME-sniffing.</p>",
+                "instances": [
+                  {
+                    "id": "16",
+                    "uri": "http://127.0.0.1:5050",
+                    "nodeName": "http://127.0.0.1:5050",
+                    "method": "GET",
+                    "param": "x-content-type-options",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": "This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.\nAt \"High\" threshold this scan rule will not alert on client or server error responses."
+                  },
+                  {
+                    "id": "3",
+                    "uri": "http://127.0.0.1:5050/",
+                    "nodeName": "http://127.0.0.1:5050/",
+                    "method": "GET",
+                    "param": "x-content-type-options",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": "This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.\nAt \"High\" threshold this scan rule will not alert on client or server error responses."
+                  },
+                  {
+                    "id": "38",
+                    "uri": "http://127.0.0.1:5050/reflect?q=hello",
+                    "nodeName": "http://127.0.0.1:5050/reflect (q)",
+                    "method": "GET",
+                    "param": "x-content-type-options",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": "This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.\nAt \"High\" threshold this scan rule will not alert on client or server error responses."
+                  },
+                  {
+                    "id": "32",
+                    "uri": "http://127.0.0.1:5050/search?q=head",
+                    "nodeName": "http://127.0.0.1:5050/search (q)",
+                    "method": "GET",
+                    "param": "x-content-type-options",
+                    "attack": "",
+                    "evidence": "",
+                    "otherinfo": "This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.\nAt \"High\" threshold this scan rule will not alert on client or server error responses."
+                  }
+                ],
+                "count": "4",
+                "systemic": false,
+                "solution": "<p>Ensure that the application/web server sets the Content-Type header appropriately, and that it sets the X-Content-Type-Options header to 'nosniff' for all web pages.</p><p>If possible, ensure that the end user uses a standards-compliant and modern web browser that does not perform MIME-sniffing at all, or that can be directed by the web application/web server to not perform MIME-sniffing.</p>",
+                "otherinfo": "<p>This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.</p><p>At \"High\" threshold this scan rule will not alert on client or server error responses.</p>",
+                "reference": "<p>https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/compatibility/gg622941(v=vs.85)</p><p>https://owasp.org/www-community/Security_Headers</p>",
+                "cweid": "693",
+                "wascid": "15",
+                "sourceid": "8"
+              },
+              {
+                "pluginid": "10049",
+                "alertRef": "10049-1",
+                "alert": "Non-Storable Content",
+                "name": "Non-Storable Content",
+                "riskcode": "0",
+                "confidence": "2",
+                "riskdesc": "Informational (Medium)",
+                "desc": "<p>The response contents are not storable by caching components such as proxy servers. If the response does not contain sensitive, personal or user-specific information, it may benefit from being stored and cached, to improve performance.</p>",
+                "instances": [
+                  {
+                    "id": "17",
+                    "uri": "http://127.0.0.1:5050",
+                    "nodeName": "http://127.0.0.1:5050",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "no-store",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "4",
+                    "uri": "http://127.0.0.1:5050/",
+                    "nodeName": "http://127.0.0.1:5050/",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "no-store",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "14",
+                    "uri": "http://127.0.0.1:5050/robots.txt",
+                    "nodeName": "http://127.0.0.1:5050/robots.txt",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "no-store",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "33",
+                    "uri": "http://127.0.0.1:5050/search?q=head",
+                    "nodeName": "http://127.0.0.1:5050/search (q)",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "no-store",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "10",
+                    "uri": "http://127.0.0.1:5050/sitemap.xml",
+                    "nodeName": "http://127.0.0.1:5050/sitemap.xml",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "no-store",
+                    "otherinfo": ""
+                  }
+                ],
+                "count": "5",
+                "systemic": true,
+                "solution": "<p>The content may be marked as storable by ensuring that the following conditions are satisfied:</p><p>The request method must be understood by the cache and defined as being cacheable (\"GET\", \"HEAD\", and \"POST\" are currently defined as cacheable)</p><p>The response status code must be understood by the cache (one of the 1XX, 2XX, 3XX, 4XX, or 5XX response classes are generally understood)</p><p>The \"no-store\" cache directive must not appear in the request or response header fields</p><p>For caching by \"shared\" caches such as \"proxy\" caches, the \"private\" response directive must not appear in the response</p><p>For caching by \"shared\" caches such as \"proxy\" caches, the \"Authorization\" header field must not appear in the request, unless the response explicitly allows it (using one of the \"must-revalidate\", \"public\", or \"s-maxage\" Cache-Control response directives)</p><p>In addition to the conditions above, at least one of the following conditions must also be satisfied by the response:</p><p>It must contain an \"Expires\" header field</p><p>It must contain a \"max-age\" response directive</p><p>For \"shared\" caches such as \"proxy\" caches, it must contain a \"s-maxage\" response directive</p><p>It must contain a \"Cache Control Extension\" that allows it to be cached</p><p>It must have a status code that is defined as cacheable by default (200, 203, 204, 206, 300, 301, 404, 405, 410, 414, 501).</p>",
+                "otherinfo": "",
+                "reference": "<p>https://datatracker.ietf.org/doc/html/rfc7234</p><p>https://datatracker.ietf.org/doc/html/rfc7231</p><p>https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html</p>",
+                "cweid": "524",
+                "wascid": "13",
+                "sourceid": "8"
+              }
+            ]
+          }
+        ],
+        "sequences": []
+      }
+    },
+    "fixed": {
+      "run": {
+        "id": 37195725264,
+        "html_url": "https://github.com/wwhosjess/SecureFlow-AppSec-Lab/actions/runs/37195725264",
+        "head_sha": "4bccd4c82e60e5e309aaa87e9e4437b0027df2ce",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-04T10:33:05Z",
+        "updated_at": "2026-10-04T10:35:21Z",
+        "zap_exit": 2,
+        "zap_version": "2.17.0",
+        "severity_counts": {
+          "High": 1,
+          "Informational": 1
+        },
+        "response_counts": {
+          "HTTP/1.0 200 OK": 630,
+          "HTTP/1.0 0": 1,
+          "HTTP/1.0 401 Unauthorized": 245,
+          "HTTP/1.0 400 Bad Request": 25,
+          "HTTP/1.0 501 Unsupported method ('TRACE')": 24,
+          "HTTP/1.0 501 Unsupported method ('OPTIONS')": 24,
+          "HTTP/1.0 501 Unsupported method ('TRACK')": 6
+        },
+        "server_tracebacks": 0,
+        "warnings": [
+          "2026-10-04 10:34:36,768 [ZAP-ActiveScanner-2] WARN  RedirectScript - Failed to configure ZAP extension on browser launch",
+          "2026-10-04 10:34:47,799 [ZAP-ActiveScanner-1] WARN  RedirectScript - Failed to configure ZAP extension on browser launch",
+          "2026-10-04 10:34:58,535 [ZAP-ActiveScanner-0] WARN  RedirectScript - Failed to configure ZAP extension on browser launch",
+          "2026-10-04 10:35:09,409 [ZAP-ActiveScanner-3] WARN  RedirectScript - Failed to configure ZAP extension on browser launch"
+        ]
+      },
+      "path": "reports/hardening-2026-10-04/zap-final",
+      "raw": {
+        "@programName": "ZAP",
+        "@version": "2.17.0",
+        "@generated": "Sun, 4 Oct 2026 10:35:16",
+        "created": "2026-10-04T10:35:16.578566259Z",
+        "insights": [
+          {
+            "level": "Low",
+            "reason": "Warning",
+            "site": "",
+            "key": "insight.log.warn",
+            "description": "ZAP warnings logged - see the zap.log file for details",
+            "statistic": "4"
+          },
+          {
+            "level": "Info",
+            "reason": "Informational",
+            "site": "",
+            "key": "insight.network.failure",
+            "description": "Percentage of network failures",
+            "statistic": "1"
+          },
+          {
+            "level": "Info",
+            "reason": "Informational",
+            "site": "http://127.0.0.1:5050",
+            "key": "insight.code.2xx",
+            "description": "Percentage of responses with status code 2xx",
+            "statistic": "66"
+          },
+          {
+            "level": "Info",
+            "reason": "Informational",
+            "site": "http://127.0.0.1:5050",
+            "key": "insight.code.4xx",
+            "description": "Percentage of responses with status code 4xx",
+            "statistic": "28"
+          },
+          {
+            "level": "Info",
+            "reason": "Informational",
+            "site": "http://127.0.0.1:5050",
+            "key": "insight.code.5xx",
+            "description": "Percentage of responses with status code 5xx",
+            "statistic": "5"
+          },
+          {
+            "level": "Info",
+            "reason": "Informational",
+            "site": "http://127.0.0.1:5050",
+            "key": "insight.endpoint.ctype.application/json",
+            "description": "Percentage of endpoints with content type application/json",
+            "statistic": "60"
+          },
+          {
+            "level": "Info",
+            "reason": "Informational",
+            "site": "http://127.0.0.1:5050",
+            "key": "insight.endpoint.ctype.text/html",
+            "description": "Percentage of endpoints with content type text/html",
+            "statistic": "40"
+          },
+          {
+            "level": "Info",
+            "reason": "Informational",
+            "site": "http://127.0.0.1:5050",
+            "key": "insight.endpoint.method.GET",
+            "description": "Percentage of endpoints with method GET",
+            "statistic": "100"
+          },
+          {
+            "level": "Info",
+            "reason": "Informational",
+            "site": "http://127.0.0.1:5050",
+            "key": "insight.endpoint.total",
+            "description": "Count of total endpoints",
+            "statistic": "5"
+          }
+        ],
+        "site": [
+          {
+            "@name": "http://127.0.0.1:5050",
+            "@host": "127.0.0.1",
+            "@port": "5050",
+            "@ssl": "false",
+            "alerts": [
+              {
+                "pluginid": "43",
+                "alertRef": "43",
+                "alert": "Source Code Disclosure - File Inclusion",
+                "name": "Source Code Disclosure - File Inclusion",
+                "riskcode": "3",
+                "confidence": "2",
+                "riskdesc": "High (Medium)",
+                "desc": "<p>The Path Traversal attack technique allows an attacker access to files, directories, and commands that potentially reside outside the web document root directory. An attacker may manipulate a URL in such a way that the web site will execute or reveal the contents of arbitrary files anywhere on the web server. Any device that exposes an HTTP-based interface is potentially vulnerable to Path Traversal.</p><p></p><p>Most web sites restrict user access to a specific portion of the file-system, typically called the \"web document root\" or \"CGI root\" directory. These directories contain the files intended for user access and the executable necessary to drive web application functionality. To access files or execute commands anywhere on the file-system, Path Traversal attacks will utilize the ability of special-characters sequences.</p><p></p><p>The most basic Path Traversal attack uses the \"../\" special-character sequence to alter the resource location requested in the URL. Although most popular web servers will prevent this technique from escaping the web document root, alternate encodings of the \"../\" sequence may help bypass the security filters. These method variations include valid and invalid Unicode-encoding (\"..%u2216\" or \"..%c0%af\") of the forward slash character, backslash characters (\"..\\\") on Windows-based servers, URL encoded characters \"%2e%2e%2f\"), and double URL encoding (\"..%255c\") of the backslash character.</p><p></p><p>Even if the web server properly restricts Path Traversal attempts in the URL path, a web application itself may still be vulnerable due to improper handling of user-supplied input. This is a common problem of web applications that use template mechanisms or load static text from files. In variations of the attack, the original URL parameter value is substituted with the file name of one of the web application's dynamic scripts. Consequently, the results can reveal source code because the file is interpreted as text instead of an executable script. These techniques often employ additional special characters such as the dot (\".\") to reveal the listing of the current working directory, or \"%00\" NULL characters in order to bypass rudimentary file extension checks.</p>",
+                "instances": [
+                  {
+                    "id": "7",
+                    "uri": "http://127.0.0.1:5050/reflect?q=hello",
+                    "nodeName": "http://127.0.0.1:5050/reflect (q)",
+                    "method": "GET",
+                    "param": "q",
+                    "attack": "reflect",
+                    "evidence": "",
+                    "otherinfo": "The output for the source code filename [reflect] differs sufficiently from that of the random parameter [ssrfdujdjxqijycxlppeycboaggcttzwslnioh], at [56%], compared to a threshold of [75%]"
+                  }
+                ],
+                "count": "1",
+                "systemic": false,
+                "solution": "<p>Assume all input is malicious. Use an \"accept known good\" input validation strategy, i.e., use an allow list of acceptable inputs that strictly conform to specifications. Reject any input that does not strictly conform to specifications, or transform it into something that does. Do not rely exclusively on looking for malicious or malformed inputs (i.e., do not rely on a deny list). However, deny lists can be useful for detecting potential attacks or determining which inputs are so malformed that they should be rejected outright.</p><p></p><p>When performing input validation, consider all potentially relevant properties, including length, type of input, the full range of acceptable values, missing or extra inputs, syntax, consistency across related fields, and conformance to business rules. As an example of business rule logic, \"boat\" may be syntactically valid because it only contains alphanumeric characters, but it is not valid if you are expecting colors such as \"red\" or \"blue.\"</p><p></p><p>For filenames, use stringent allow lists that limit the character set to be used. If feasible, only allow a single \".\" character in the filename to avoid weaknesses, and exclude directory separators such as \"/\". Use an allow list of allowable file extensions.</p><p></p><p>Warning: if you attempt to cleanse your data, then do so that the end result is not in the form that can be dangerous. A sanitizing mechanism can remove characters such as '.' and ';' which may be required for some exploits. An attacker can try to fool the sanitizing mechanism into \"cleaning\" data into a dangerous form. Suppose the attacker injects a '.' inside a filename (e.g. \"sensi.tiveFile\") and the sanitizing mechanism removes the character resulting in the valid filename, \"sensitiveFile\". If the input data are now assumed to be safe, then the file may be compromised. </p><p></p><p>Inputs should be decoded and canonicalized to the application's current internal representation before being validated. Make sure that your application does not decode the same input twice. Such errors could be used to bypass allow list schemes by introducing dangerous inputs after they have been checked.</p><p></p><p>Use a built-in path canonicalization function (such as realpath() in C) that produces the canonical version of the pathname, which effectively removes \"..\" sequences and symbolic links.</p><p></p><p>Run your code using the lowest privileges that are required to accomplish the necessary tasks. If possible, create isolated accounts with limited privileges that are only used for a single task. That way, a successful attack will not immediately give the attacker access to the rest of the software or its environment. For example, database applications rarely need to run as the database administrator, especially in day-to-day operations.</p><p></p><p>When the set of acceptable objects, such as filenames or URLs, is limited or known, create a mapping from a set of fixed input values (such as numeric IDs) to the actual filenames or URLs, and reject all other inputs.</p><p></p><p>Run your code in a \"jail\" or similar sandbox environment that enforces strict boundaries between the process and the operating system. This may effectively restrict which files can be accessed in a particular directory or which commands can be executed by your software.</p><p></p><p>OS-level examples include the Unix chroot jail, AppArmor, and SELinux. In general, managed code may provide some protection. For example, java.io.FilePermission in the Java SecurityManager allows you to specify restrictions on file operations.</p><p></p><p>This may not be a feasible solution, and it only limits the impact to the operating system; the rest of your application may still be subject to compromise.</p><p></p>",
+                "otherinfo": "<p>The output for the source code filename [reflect] differs sufficiently from that of the random parameter [ssrfdujdjxqijycxlppeycboaggcttzwslnioh], at [56%], compared to a threshold of [75%]</p>",
+                "reference": "<p>https://owasp.org/www-community/attacks/Path_Traversal</p><p>https://cwe.mitre.org/data/definitions/22.html</p>",
+                "cweid": "541",
+                "wascid": "33",
+                "sourceid": "647"
+              },
+              {
+                "pluginid": "10049",
+                "alertRef": "10049-1",
+                "alert": "Non-Storable Content",
+                "name": "Non-Storable Content",
+                "riskcode": "0",
+                "confidence": "2",
+                "riskdesc": "Informational (Medium)",
+                "desc": "<p>The response contents are not storable by caching components such as proxy servers. If the response does not contain sensitive, personal or user-specific information, it may benefit from being stored and cached, to improve performance.</p>",
+                "instances": [
+                  {
+                    "id": "2",
+                    "uri": "http://127.0.0.1:5050",
+                    "nodeName": "http://127.0.0.1:5050",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "no-store",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "0",
+                    "uri": "http://127.0.0.1:5050/",
+                    "nodeName": "http://127.0.0.1:5050/",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "no-store",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "1",
+                    "uri": "http://127.0.0.1:5050/robots.txt",
+                    "nodeName": "http://127.0.0.1:5050/robots.txt",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "no-store",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "5",
+                    "uri": "http://127.0.0.1:5050/search?q=head",
+                    "nodeName": "http://127.0.0.1:5050/search (q)",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "no-store",
+                    "otherinfo": ""
+                  },
+                  {
+                    "id": "3",
+                    "uri": "http://127.0.0.1:5050/sitemap.xml",
+                    "nodeName": "http://127.0.0.1:5050/sitemap.xml",
+                    "method": "GET",
+                    "param": "",
+                    "attack": "",
+                    "evidence": "no-store",
+                    "otherinfo": ""
+                  }
+                ],
+                "count": "5",
+                "systemic": true,
+                "solution": "<p>The content may be marked as storable by ensuring that the following conditions are satisfied:</p><p>The request method must be understood by the cache and defined as being cacheable (\"GET\", \"HEAD\", and \"POST\" are currently defined as cacheable)</p><p>The response status code must be understood by the cache (one of the 1XX, 2XX, 3XX, 4XX, or 5XX response classes are generally understood)</p><p>The \"no-store\" cache directive must not appear in the request or response header fields</p><p>For caching by \"shared\" caches such as \"proxy\" caches, the \"private\" response directive must not appear in the response</p><p>For caching by \"shared\" caches such as \"proxy\" caches, the \"Authorization\" header field must not appear in the request, unless the response explicitly allows it (using one of the \"must-revalidate\", \"public\", or \"s-maxage\" Cache-Control response directives)</p><p>In addition to the conditions above, at least one of the following conditions must also be satisfied by the response:</p><p>It must contain an \"Expires\" header field</p><p>It must contain a \"max-age\" response directive</p><p>For \"shared\" caches such as \"proxy\" caches, it must contain a \"s-maxage\" response directive</p><p>It must contain a \"Cache Control Extension\" that allows it to be cached</p><p>It must have a status code that is defined as cacheable by default (200, 203, 204, 206, 300, 301, 404, 405, 410, 414, 501).</p>",
+                "otherinfo": "",
+                "reference": "<p>https://datatracker.ietf.org/doc/html/rfc7234</p><p>https://datatracker.ietf.org/doc/html/rfc7231</p><p>https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html</p>",
+                "cweid": "524",
+                "wascid": "13",
+                "sourceid": "8"
+              }
+            ]
+          }
+        ],
+        "sequences": []
+      }
+    }
+  },
+  "source_disclosure": {
+    "raw_alert": {
+      "pluginid": "43",
+      "alertRef": "43",
+      "alert": "Source Code Disclosure - File Inclusion",
+      "name": "Source Code Disclosure - File Inclusion",
+      "riskcode": "3",
+      "confidence": "2",
+      "riskdesc": "High (Medium)",
+      "desc": "<p>The Path Traversal attack technique allows an attacker access to files, directories, and commands that potentially reside outside the web document root directory. An attacker may manipulate a URL in such a way that the web site will execute or reveal the contents of arbitrary files anywhere on the web server. Any device that exposes an HTTP-based interface is potentially vulnerable to Path Traversal.</p><p></p><p>Most web sites restrict user access to a specific portion of the file-system, typically called the \"web document root\" or \"CGI root\" directory. These directories contain the files intended for user access and the executable necessary to drive web application functionality. To access files or execute commands anywhere on the file-system, Path Traversal attacks will utilize the ability of special-characters sequences.</p><p></p><p>The most basic Path Traversal attack uses the \"../\" special-character sequence to alter the resource location requested in the URL. Although most popular web servers will prevent this technique from escaping the web document root, alternate encodings of the \"../\" sequence may help bypass the security filters. These method variations include valid and invalid Unicode-encoding (\"..%u2216\" or \"..%c0%af\") of the forward slash character, backslash characters (\"..\\\") on Windows-based servers, URL encoded characters \"%2e%2e%2f\"), and double URL encoding (\"..%255c\") of the backslash character.</p><p></p><p>Even if the web server properly restricts Path Traversal attempts in the URL path, a web application itself may still be vulnerable due to improper handling of user-supplied input. This is a common problem of web applications that use template mechanisms or load static text from files. In variations of the attack, the original URL parameter value is substituted with the file name of one of the web application's dynamic scripts. Consequently, the results can reveal source code because the file is interpreted as text instead of an executable script. These techniques often employ additional special characters such as the dot (\".\") to reveal the listing of the current working directory, or \"%00\" NULL characters in order to bypass rudimentary file extension checks.</p>",
+      "instances": [
+        {
+          "id": "7",
+          "uri": "http://127.0.0.1:5050/reflect?q=hello",
+          "nodeName": "http://127.0.0.1:5050/reflect (q)",
+          "method": "GET",
+          "param": "q",
+          "attack": "reflect",
+          "evidence": "",
+          "otherinfo": "The output for the source code filename [reflect] differs sufficiently from that of the random parameter [ssrfdujdjxqijycxlppeycboaggcttzwslnioh], at [56%], compared to a threshold of [75%]"
+        }
+      ],
+      "count": "1",
+      "systemic": false,
+      "solution": "<p>Assume all input is malicious. Use an \"accept known good\" input validation strategy, i.e., use an allow list of acceptable inputs that strictly conform to specifications. Reject any input that does not strictly conform to specifications, or transform it into something that does. Do not rely exclusively on looking for malicious or malformed inputs (i.e., do not rely on a deny list). However, deny lists can be useful for detecting potential attacks or determining which inputs are so malformed that they should be rejected outright.</p><p></p><p>When performing input validation, consider all potentially relevant properties, including length, type of input, the full range of acceptable values, missing or extra inputs, syntax, consistency across related fields, and conformance to business rules. As an example of business rule logic, \"boat\" may be syntactically valid because it only contains alphanumeric characters, but it is not valid if you are expecting colors such as \"red\" or \"blue.\"</p><p></p><p>For filenames, use stringent allow lists that limit the character set to be used. If feasible, only allow a single \".\" character in the filename to avoid weaknesses, and exclude directory separators such as \"/\". Use an allow list of allowable file extensions.</p><p></p><p>Warning: if you attempt to cleanse your data, then do so that the end result is not in the form that can be dangerous. A sanitizing mechanism can remove characters such as '.' and ';' which may be required for some exploits. An attacker can try to fool the sanitizing mechanism into \"cleaning\" data into a dangerous form. Suppose the attacker injects a '.' inside a filename (e.g. \"sensi.tiveFile\") and the sanitizing mechanism removes the character resulting in the valid filename, \"sensitiveFile\". If the input data are now assumed to be safe, then the file may be compromised. </p><p></p><p>Inputs should be decoded and canonicalized to the application's current internal representation before being validated. Make sure that your application does not decode the same input twice. Such errors could be used to bypass allow list schemes by introducing dangerous inputs after they have been checked.</p><p></p><p>Use a built-in path canonicalization function (such as realpath() in C) that produces the canonical version of the pathname, which effectively removes \"..\" sequences and symbolic links.</p><p></p><p>Run your code using the lowest privileges that are required to accomplish the necessary tasks. If possible, create isolated accounts with limited privileges that are only used for a single task. That way, a successful attack will not immediately give the attacker access to the rest of the software or its environment. For example, database applications rarely need to run as the database administrator, especially in day-to-day operations.</p><p></p><p>When the set of acceptable objects, such as filenames or URLs, is limited or known, create a mapping from a set of fixed input values (such as numeric IDs) to the actual filenames or URLs, and reject all other inputs.</p><p></p><p>Run your code in a \"jail\" or similar sandbox environment that enforces strict boundaries between the process and the operating system. This may effectively restrict which files can be accessed in a particular directory or which commands can be executed by your software.</p><p></p><p>OS-level examples include the Unix chroot jail, AppArmor, and SELinux. In general, managed code may provide some protection. For example, java.io.FilePermission in the Java SecurityManager allows you to specify restrictions on file operations.</p><p></p><p>This may not be a feasible solution, and it only limits the impact to the operating system; the rest of your application may still be subject to compromise.</p><p></p>",
+      "otherinfo": "<p>The output for the source code filename [reflect] differs sufficiently from that of the random parameter [ssrfdujdjxqijycxlppeycboaggcttzwslnioh], at [56%], compared to a threshold of [75%]</p>",
+      "reference": "<p>https://owasp.org/www-community/attacks/Path_Traversal</p><p>https://cwe.mitre.org/data/definitions/22.html</p>",
+      "cweid": "541",
+      "wascid": "33",
+      "sourceid": "647"
+    },
+    "exact_scanner_messages": [
+      {
+        "note": "",
+        "rtt": "3",
+        "responseBody": "<h1>Search results</h1><p>ssrfdujdjxqijycxlppeycboaggcttzwslnioh</p>",
+        "cookieParams": "",
+        "requestBody": "",
+        "responseHeader": "HTTP/1.0 200 OK\r\nServer: SecureFlow\r\nDate: Sun, 04 Oct 2026 10:35:13 GMT\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: 68\r\nCache-Control: no-store\r\nX-Content-Type-Options: nosniff\r\nContent-Security-Policy: default-src 'none'; frame-ancestors 'none'; form-action 'none'; base-uri 'none'\r\nPermissions-Policy: camera=(), microphone=(), geolocation=()\r\nCross-Origin-Opener-Policy: same-origin\r\nCross-Origin-Embedder-Policy: require-corp\r\nCross-Origin-Resource-Policy: same-origin\r\n\r\n",
+        "requestHeader": "GET http://127.0.0.1:5050/reflect?q=ssrfdujdjxqijycxlppeycboaggcttzwslnioh HTTP/1.1\r\nhost: 127.0.0.1:5050\r\nuser-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36\r\npragma: no-cache\r\ncache-control: no-cache\r\nreferer: http://127.0.0.1:5050/\r\n\r\n",
+        "id": "645",
+        "type": "14",
+        "timestamp": "1791110113621",
+        "tags": []
+      },
+      {
+        "note": "",
+        "rtt": "2",
+        "responseBody": "<h1>Search results</h1><p>reflect</p>",
+        "cookieParams": "",
+        "requestBody": "",
+        "responseHeader": "HTTP/1.0 200 OK\r\nServer: SecureFlow\r\nDate: Sun, 04 Oct 2026 10:35:13 GMT\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: 37\r\nCache-Control: no-store\r\nX-Content-Type-Options: nosniff\r\nContent-Security-Policy: default-src 'none'; frame-ancestors 'none'; form-action 'none'; base-uri 'none'\r\nPermissions-Policy: camera=(), microphone=(), geolocation=()\r\nCross-Origin-Opener-Policy: same-origin\r\nCross-Origin-Embedder-Policy: require-corp\r\nCross-Origin-Resource-Policy: same-origin\r\n\r\n",
+        "requestHeader": "GET http://127.0.0.1:5050/reflect?q=reflect HTTP/1.1\r\nhost: 127.0.0.1:5050\r\nuser-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36\r\npragma: no-cache\r\ncache-control: no-cache\r\nreferer: http://127.0.0.1:5050/\r\n\r\n",
+        "id": "646",
+        "type": "14",
+        "timestamp": "1791110113690",
+        "tags": []
+      },
+      {
+        "note": "",
+        "rtt": "2",
+        "responseBody": "<h1>Search results</h1><p>reflect</p>",
+        "cookieParams": "",
+        "requestBody": "",
+        "responseHeader": "HTTP/1.0 200 OK\r\nServer: SecureFlow\r\nDate: Sun, 04 Oct 2026 10:35:13 GMT\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: 37\r\nCache-Control: no-store\r\nX-Content-Type-Options: nosniff\r\nContent-Security-Policy: default-src 'none'; frame-ancestors 'none'; form-action 'none'; base-uri 'none'\r\nPermissions-Policy: camera=(), microphone=(), geolocation=()\r\nCross-Origin-Opener-Policy: same-origin\r\nCross-Origin-Embedder-Policy: require-corp\r\nCross-Origin-Resource-Policy: same-origin\r\n\r\n",
+        "requestHeader": "GET http://127.0.0.1:5050/reflect?q=reflect HTTP/1.1\r\nhost: 127.0.0.1:5050\r\nuser-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36\r\npragma: no-cache\r\ncache-control: no-cache\r\nreferer: http://127.0.0.1:5050/\r\n\r\n",
+        "id": "647",
+        "type": "3",
+        "timestamp": "1791110113690",
+        "tags": []
+      }
+    ]
+  },
+  "code_evidence": {
+    "commit": "4bccd4c82e60e5e309aaa87e9e4437b0027df2ce",
+    "path": "lab/app.py",
+    "sha256": "36541982eaab4559248b1529ca751cd5ef9d75513cf7c0a5cf37ef00c8069fb3",
+    "excerpts": [
+      {
+        "line": 87,
+        "text": "    def reflection(self, term):"
+      },
+      {
+        "line": 88,
+        "text": "        if self.mode == \"vulnerable\":"
+      },
+      {
+        "line": 89,
+        "text": "            return \"<h1>Search results</h1><p>\" + term + \"</p>\""
+      },
+      {
+        "line": 90,
+        "text": "        return \"<h1>Search results</h1><p>\" + html.escape(term) + \"</p>\""
+      },
+      {
+        "line": 155,
+        "text": "            if parsed.path == \"/reflect\":"
+      },
+      {
+        "line": 156,
+        "text": "                return self.send(200, shop.reflection(parse_qs(parsed.query).get(\"q\", [\"\"])[0]), \"text/html\")"
+      }
+    ]
+  }
+}

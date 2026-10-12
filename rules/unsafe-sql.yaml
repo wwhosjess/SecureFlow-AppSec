@@ -1,0 +1,20 @@
+rules:
+  - id: secureflow.sql-string-construction
+    languages: [python]
+    severity: ERROR
+    message: SQL built by concatenation or interpolation. Bind user values as parameters.
+    metadata:
+      cwe: CWE-89
+      scope: Local pattern rule; not a complete taint analysis.
+    patterns:
+      - pattern-either:
+          - pattern: $DB.execute($A + $B, ...)
+          - pattern: $DB.execute(f"...", ...)
+          - pattern: |
+              $QUERY = $A + $B
+              ...
+              $DB.execute($QUERY, ...)
+          - pattern: |
+              $QUERY = f"..."
+              ...
+              $DB.execute($QUERY, ...)

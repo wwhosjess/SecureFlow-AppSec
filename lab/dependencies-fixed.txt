@@ -1,0 +1,2 @@
+# Scan-only comparison; app.py itself uses the standard library.
+requests==2.34.2
